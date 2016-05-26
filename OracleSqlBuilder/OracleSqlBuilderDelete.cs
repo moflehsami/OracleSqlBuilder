@@ -81,10 +81,10 @@ namespace OracleSqlBuilder {
 		/// Adds a condition to the WHERE clause.
 		/// </summary>
 		/// <param name="ConditionStatement">The condition statement/s to be added.</param>
-		/// <param name="Args">The arguments to be passed for formatting a string.</param>
+		/// <param name="ParameterValues">The arguments to be passed for formatting a string.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderDelete SetWhere(string ConditionStatement, params string[] Args) {
-			return this.SetWhere(true, ConditionStatement, Args);
+		public OracleSqlBuilderDelete SetWhere(string ConditionStatement, params object[] ParameterValues) {
+			return this.SetWhere(true, ConditionStatement, ParameterValues);
 		}
 		#endregion
 
