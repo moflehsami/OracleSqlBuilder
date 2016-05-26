@@ -133,7 +133,7 @@ namespace OracleSqlBuilder {
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine(String.Format("UPDATE {0}.{1}", this._EncloseBackTick(this._Database), this._EncloseBackTick(this._Table)));
 			sb.AppendLine("SET");
-			sb.AppendLine(String.Format("\t{0}", String.Join(",\n\t", this._Updates.Select(kv => String.Format("{0} = {1}", kv.Key, kv.Value)))));
+			sb.AppendLine(String.Format("\t{0}", String.Join(",\n\t", this._Updates.Select(kv => String.Format("{0} = {1}", this._Name(kv.Key), kv.Value)))));
 			if (this._Wheres.Count > 0) {
 				sb.AppendLine(String.Format("WHERE\n\t({0})", String.Join(" ", this._Wheres)));
 			}
