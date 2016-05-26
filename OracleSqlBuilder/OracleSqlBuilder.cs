@@ -232,7 +232,7 @@ namespace OracleSqlBuilder {
 						if (this._VirtualFields.ContainsKey(strValue)) {
 							return this._VirtualFields[strValue];
 						} else {
-							return String.Format("{0}.{1}", this._EncloseBackTick(this._TableAlias), this._EncloseBackTick(strValue));
+							return String.Format("{0}.{1}", this._EncloseBackTick(!String.IsNullOrWhiteSpace(this._TableAlias) ? this._TableAlias : this._Table), this._EncloseBackTick(strValue));
 						}
 					}
 					// with string.string
