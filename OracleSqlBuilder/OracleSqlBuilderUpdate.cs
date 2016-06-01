@@ -52,6 +52,7 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="Name">The name of the parameter.</param>
 		/// <param name="Value">The value of the parameter.</param>
+		/// <returns>The current instance of this class.</returns>
 		public OracleSqlBuilderUpdate SetParameter(string Name, string Value) {
 			this._SetParameter(Name, Value);
 			return this;
@@ -60,10 +61,14 @@ namespace OracleSqlBuilder {
 		/// <summary>
 		/// Adds a pair of field and value for the UPDATE clause.
 		/// </summary>
+		/// <param name="Condition">The condition to check before adding the pair for the UPDATE clause.</param>
 		/// <param name="Field">The field to be added.</param>
 		/// <param name="Value">The value of the field.</param>
-		/// <returns></returns>
-		public OracleSqlBuilderUpdate SetUpdate(string Field, object Value) {
+		/// <returns>The current instance of this class.</returns>
+		public OracleSqlBuilderUpdate SetUpdate(bool Condition, string Field, object Value) {
+			if (!Condition) {
+				return this;
+			}
 			if (String.IsNullOrWhiteSpace(Field)) {
 				throw new ArgumentException("Field argument should not be empty.");
 			}
@@ -84,6 +89,16 @@ namespace OracleSqlBuilder {
 				this._SetUpdate(Field, strParameterName);
 			}
 			return this;
+		}
+
+		/// <summary>
+		/// Adds a pair of field and value for the UPDATE clause.
+		/// </summary>
+		/// <param name="Field">The field to be added.</param>
+		/// <param name="Value">The value of the field.</param>
+		/// <returns>The current instance of this class.</returns>
+		public OracleSqlBuilderUpdate SetUpdate(string Field, object Value) {
+			return this.SetUpdate(true, Field, Value);
 		}
 
 		/// <summary>

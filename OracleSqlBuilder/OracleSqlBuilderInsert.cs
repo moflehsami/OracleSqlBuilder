@@ -45,10 +45,14 @@ namespace OracleSqlBuilder {
 		/// <summary>
 		/// Adds a pair of field and value for the INSERT clause.
 		/// </summary>
+		/// <param name="Condition">The condition to check before adding the pair for the INSERT clause.</param>
 		/// <param name="Field">The field to be added.</param>
 		/// <param name="Value">The value of the field.</param>
-		/// <returns></returns>
-		public OracleSqlBuilderInsert SetInsert(string Field, object Value) {
+		/// <returns>The current instance of this class.</returns>
+		public OracleSqlBuilderInsert SetInsert(bool Condition, string Field, object Value) {
+			if (!Condition) {
+				return this;
+			}
 			if (String.IsNullOrWhiteSpace(Field)) {
 				throw new ArgumentException("Field argument should not be empty.");
 			}
@@ -71,6 +75,16 @@ namespace OracleSqlBuilder {
 				this._SetInsert(Field, strParameterName);
 			}
 			return this;
+		}
+
+		/// <summary>
+		/// Adds a pair of field and value for the INSERT clause.
+		/// </summary>
+		/// <param name="Field">The field to be added.</param>
+		/// <param name="Value">The value of the field.</param>
+		/// <returns>The current instance of this class.</returns>
+		public OracleSqlBuilderInsert SetInsert(string Field, object Value) {
+			return this.SetInsert(true, Field, Value);
 		}
 		#endregion
 
