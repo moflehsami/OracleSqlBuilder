@@ -59,6 +59,7 @@ namespace OracleSqlBuilder {
 			if (!this._IsValidField(Field)) {
 				throw new ArgumentException("Field argument is not a valid format.");
 			}
+			Field = this._Name(Field);
 			if (Value == null) {
 				this._SetInsert(Field, "NULL");
 			} else if (Value is bool) {

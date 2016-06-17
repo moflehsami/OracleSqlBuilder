@@ -6,9 +6,11 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
+	<licenseUrl>https://github.com/netlibrary/OracleSqlBuilder/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/netlibrary/OracleSqlBuilder</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Initial release.</releaseNotes>
+    <releaseNotes>Added a condition argument for SetUpdate and SetInsert.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>oracle sql builder</tags>
   </metadata>
