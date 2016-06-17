@@ -72,14 +72,14 @@ namespace OracleSqlBuilder {
 				throw new ArgumentException("Database argument should not be empty.");
 			}
 			if (!this._IsValidField(Database)) {
-				throw new ArgumentException("Database argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Database argument '{0}' should only contain any word character (letter, number, underscore).", Database));
 			}
 			this._Database = Database;
 			if (String.IsNullOrWhiteSpace(Table)) {
 				throw new ArgumentException("Table argument should not be empty.");
 			}
 			if (!this._IsValidField(Table)) {
-				throw new ArgumentException("Table argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Table argument '{0}' should only contain any word character (letter, number, underscore).", Table));
 			}
 			this._Table = Table;
 			if (!String.IsNullOrWhiteSpace(TableAlias)) {
@@ -165,7 +165,7 @@ namespace OracleSqlBuilder {
 				throw new ArgumentException("Expression argument should not be empty.");
 			}
 			if (!this._IsValidExpression(Expression)) {
-				throw new ArgumentException("Expression argument is not a valid format.");
+				throw new ArgumentException(String.Format("Expression argument '{0}' is not a valid format.", Expression));
 			}
 			if (this._VirtualFields.ContainsKey(Expression) && String.IsNullOrWhiteSpace(Alias)) {
 				Alias = Expression;
@@ -218,13 +218,13 @@ namespace OracleSqlBuilder {
 				throw new ArgumentException("Database argument should not be empty.");
 			}
 			if (!this._IsValidField(Database)) {
-				throw new ArgumentException("Database argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Database argument '{0}' should only contain any word character (letter, number, underscore).", Database));
 			}
 			if (String.IsNullOrWhiteSpace(Table)) {
 				throw new ArgumentException("Table argument should not be empty.");
 			}
 			if (!this._IsValidField(Table)) {
-				throw new ArgumentException("Table argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Table argument '{0}' should only contain any word character (letter, number, underscore).", Table));
 			}
 			TableAlias = this._RemoveBackTick(TableAlias);
 			if (String.IsNullOrWhiteSpace(TableAlias)) {
@@ -250,7 +250,7 @@ namespace OracleSqlBuilder {
 				throw new ArgumentException("Table argument should not be empty.");
 			}
 			if (!this._IsValidField(Table)) {
-				throw new ArgumentException("Table argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Table argument '{0}' should only contain any word character (letter, number, underscore).", Table));
 			}
 			TableAlias = this._RemoveBackTick(TableAlias);
 			if (String.IsNullOrWhiteSpace(TableAlias)) {
@@ -323,13 +323,13 @@ namespace OracleSqlBuilder {
 				throw new ArgumentException("Database argument should not be empty.");
 			}
 			if (!this._IsValidField(Database)) {
-				throw new ArgumentException("Database argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Database argument '{0}' should only contain any word character (letter, number, underscore).", Database));
 			}
 			if (String.IsNullOrWhiteSpace(Table)) {
 				throw new ArgumentException("Table argument should not be empty.");
 			}
 			if (!this._IsValidField(Table)) {
-				throw new ArgumentException("Table argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Table argument '{0}' should only contain any word character (letter, number, underscore).", Table));
 			}
 			TableAlias = this._RemoveBackTick(TableAlias);
 			if (String.IsNullOrWhiteSpace(TableAlias)) {
@@ -355,7 +355,7 @@ namespace OracleSqlBuilder {
 				throw new ArgumentException("Table argument should not be empty.");
 			}
 			if (!this._IsValidField(Table)) {
-				throw new ArgumentException("Table argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Table argument '{0}' should only contain any word character (letter, number, underscore).", Table));
 			}
 			TableAlias = this._RemoveBackTick(TableAlias);
 			if (String.IsNullOrWhiteSpace(TableAlias)) {
@@ -463,7 +463,7 @@ namespace OracleSqlBuilder {
 						continue;
 					}
 					if (!this._IsValidExpression(strExpression)) {
-						throw new ArgumentException(String.Format("Expression {0} is not a valid format.", strExpression));
+						throw new ArgumentException(String.Format("Expression '{0}' is not a valid format.", strExpression));
 					}
 					this._Groups.Add(this._Name(strExpression));
 				}
@@ -531,7 +531,7 @@ namespace OracleSqlBuilder {
 						continue;
 					}
 					if (!this._IsValidExpression(strExpression)) {
-						throw new ArgumentException(String.Format("Expression {0} is not a valid format.", strExpression));
+						throw new ArgumentException(String.Format("Expression '{0}' is not a valid format.", strExpression));
 					}
 					lstExpression.Add(this._Name(strExpression));
 				}

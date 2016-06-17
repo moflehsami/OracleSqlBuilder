@@ -27,14 +27,14 @@ namespace OracleSqlBuilder {
 				throw new ArgumentException("Database argument should not be empty.");
 			}
 			if (!this._IsValidField(Database)) {
-				throw new ArgumentException("Database argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Database argument '{0}' should only contain any word character (letter, number, underscore).", Database));
 			}
 			this._Database = Database;
 			if (String.IsNullOrWhiteSpace(Table)) {
 				throw new ArgumentException("Table argument should not be empty.");
 			}
 			if (!this._IsValidField(Table)) {
-				throw new ArgumentException("Table argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Table argument '{0}' should only contain any word character (letter, number, underscore).", Table));
 			}
 			this._Table = Table;
 			this._InitProperties();
@@ -59,7 +59,6 @@ namespace OracleSqlBuilder {
 			if (!this._IsValidField(Field)) {
 				throw new ArgumentException("Field argument is not a valid format.");
 			}
-			Field = this._Name(Field);
 			if (Value == null) {
 				this._SetInsert(Field, "NULL");
 			} else if (Value is bool) {
@@ -69,7 +68,7 @@ namespace OracleSqlBuilder {
 			} else if (this._IsValidExpression(Value.ToString())) {
 				this._SetInsert(Field, String.Format("'{0}'", Value));
 			} else {
-				string strParameterName = String.Format(":{0}", Regex.Replace(Field.Replace('-', '_'), @"(?<=\w)([A-Z])", delegate (Match m) {
+				string strParameterName = String.Format(":{0}", Regex.Replace(Regex.Replace(Field, @"\W", "_"), @"(?<=\w)([A-Z])", delegate (Match m) {
 					return String.Format("{0}{1}", "_", m.Value);
 				}));
 				this._SetParameter(strParameterName, Value);
@@ -98,7 +97,7 @@ namespace OracleSqlBuilder {
 		public override string ToString() {
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine(String.Format("INSERT INTO {0}.{1}", this._EncloseBackTick(this._Database), this._EncloseBackTick(this._Table)));
-			sb.AppendLine(String.Format("\t({0})", String.Join(",\n\t", this._Inserts.Keys.ToArray())));
+			sb.AppendLine(String.Format("\t({0})", String.Join(",\n\t", this._Inserts.Keys.Select(x => this._Name(x)).ToArray())));
 			sb.AppendLine(String.Format("VALUES\n\t({0})", String.Join(",\n\t", this._Inserts.Values.ToArray())));
 			return sb.ToString();
 		}

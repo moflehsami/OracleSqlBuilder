@@ -32,14 +32,14 @@ namespace OracleSqlBuilder {
 				throw new ArgumentException("Database argument should not be empty.");
 			}
 			if (!this._IsValidField(Database)) {
-				throw new ArgumentException("Database argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Database argument '{0}' should only contain any word character (letter, number, underscore).", Database));
 			}
 			this._Database = Database;
 			if (String.IsNullOrWhiteSpace(Table)) {
 				throw new ArgumentException("Table argument should not be empty.");
 			}
 			if (!this._IsValidField(Table)) {
-				throw new ArgumentException("Table argument should only contain any word character (letter, number, underscore).");
+				throw new ArgumentException(String.Format("Table argument '{0}' should only contain any word character (letter, number, underscore).", Table));
 			}
 			this._Table = Table;
 			this._InitProperties();
@@ -73,7 +73,7 @@ namespace OracleSqlBuilder {
 				throw new ArgumentException("Field argument should not be empty.");
 			}
 			if (!this._IsValidField(Field)) {
-				throw new ArgumentException("Field argument is not a valid format.");
+				throw new ArgumentException(String.Format("Field argument '{0}' is not a valid format.", Field));
 			}
 			if (Value == null) {
 				this._SetUpdate(Field, "NULL");

@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/netlibrary/OracleSqlBuilder</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Added a condition argument for SetUpdate and SetInsert.</releaseNotes>
+    <releaseNotes>Made few adjustments on the code.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>oracle sql builder</tags>
   </metadata>
