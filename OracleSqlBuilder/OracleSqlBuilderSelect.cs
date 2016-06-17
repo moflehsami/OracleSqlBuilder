@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -445,10 +446,10 @@ namespace OracleSqlBuilder {
 		/// Adds a condition to the WHERE clause.
 		/// </summary>
 		/// <param name="ConditionStatement">The condition statement/s to be added.</param>
-		/// <param name="Args">The arguments to be passed for formatting a string.</param>
+		/// <param name="ParameterValues">The arguments to be passed for formatting a string.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetWhere(string ConditionStatement, params string[] Args) {
-			return this.SetWhere(true, ConditionStatement, Args);
+		public OracleSqlBuilderSelect SetWhere(string ConditionStatement, params object[] ParameterValues) {
+			return this.SetWhere(true, ConditionStatement, ParameterValues);
 		}
 
 		/// <summary>
@@ -488,7 +489,7 @@ namespace OracleSqlBuilder {
 		/// <param name="ConditionStatement">The condition statement/s to be added.</param>
 		/// <param name="ParameterValues">The arguments to be passed for formatting a string.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetHaving(bool Condition, string ConditionStatement, params string[] ParameterValues) {
+		public OracleSqlBuilderSelect SetHaving(bool Condition, string ConditionStatement, params object[] ParameterValues) {
 			if (Condition) {
 				ConditionStatement = this._RemoveBackTick(ConditionStatement);
 				if (String.IsNullOrWhiteSpace(ConditionStatement)) {
@@ -511,10 +512,10 @@ namespace OracleSqlBuilder {
 		/// Adds a condition to the HAVING clause.
 		/// </summary>
 		/// <param name="ConditionStatement">The condition statement/s to be added.</param>
-		/// <param name="Args">The arguments to be passed for formatting a string.</param>
+		/// <param name="ParameterValues">The arguments to be passed for formatting a string.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetHaving(string ConditionStatement, params string[] Args) {
-			return this.SetHaving(true, ConditionStatement, Args);
+		public OracleSqlBuilderSelect SetHaving(string ConditionStatement, params object[] ParameterValues) {
+			return this.SetHaving(true, ConditionStatement, ParameterValues);
 		}
 
 		/// <summary>
