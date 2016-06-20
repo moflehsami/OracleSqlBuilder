@@ -9,7 +9,7 @@ namespace OracleSqlBuilder {
 		/// <summary>
 		/// The number of affected rows.
 		/// </summary>
-		public double AffectedRows {
+		public long AffectedRows {
 			get;
 			internal set;
 		}
