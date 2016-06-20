@@ -52,7 +52,7 @@ namespace OracleSqlBuilder {
 		/// <summary>
 		/// The number of rows/records.
 		/// </summary>
-		public double RowCount {
+		public long RowCount {
 			get;
 			internal set;
 		}
