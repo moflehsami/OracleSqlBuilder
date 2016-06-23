@@ -7,18 +7,12 @@
 		/// <summary>
 		/// Debug property. If true, printing out the statements and parameters are enabled.
 		/// </summary>
-		public static bool Debug {
-			get;
-			set;
-		}
+		public static bool Debug { get; set; }
 
 		/// <summary>
 		/// Default Connection property. The name of the default connection.
 		/// </summary>
-		public static string DefaultConnection {
-			get;
-			set;
-		}
+		public static string DefaultConnection { get; set; }
 		#endregion
 
 		#region Static Constructor Method

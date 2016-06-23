@@ -8,200 +8,128 @@ namespace OracleSqlBuilder {
 	/// </summary>
 	public class OracleSqlConnectionString {
 		#region Private Static Property
-		private static Dictionary<string, string> _Connections {
-			get;
-			set;
-		}
+		private static Dictionary<string, string> _Connections { get; set; }
 		#endregion
 
 		#region Public Properties
 		/// <summary>
 		/// Maximum life time (in seconds) of the connection.
 		/// </summary>
-		public uint ConnectionLifetime {
-			get;
-			set;
-		}
+		public uint ConnectionLifetime { get; set; }
 
 		/// <summary>
 		/// Maximum time (in seconds) to wait for a free connection from the pool.
 		/// </summary>
-		public uint ConnectionTimeout {
-			get;
-			set;
-		}
+		public uint ConnectionTimeout { get; set; }
 
 		/// <summary>
 		/// Returns an implicit database connection if set to true.
 		/// </summary>
-		public bool ContextConnection {
-			get;
-			set;
-		}
+		public bool ContextConnection { get; set; }
 
 		/// <summary>
 		/// Oracle Net Services Name, Connect Descriptor, or an easy connect naming that identifies the database
 		/// to which to connect.
 		/// </summary>
-		public string DataSource {
-			get;
-			set;
-		}
+		public string DataSource { get; set; }
 
 		/// <summary>
 		/// Administrative privileges: SYSDBA or SYSOPER.
 		/// </summary>
-		public DBAPrivileges DBAPrivilege {
-			get;
-			set;
-		}
+		public DBAPrivileges DBAPrivilege { get; set; }
 
 		/// <summary>
 		/// Number of connections that are closed when an excessive amount of established connections are unused.
 		/// </summary>
-		public uint DecrPoolSize {
-			get;
-			set;
-		}
+		public uint DecrPoolSize { get; set; }
 
 		/// <summary>
 		/// Controls the enlistment behavior and capabilities of a connection in context of COM+ transactions or
 		/// System.Transactions.
 		/// </summary>
-		public bool Enlist {
-			get;
-			set;
-		}
+		public bool Enlist { get; set; }
 
 		/// <summary>
 		/// Enables ODP.NET connection pool to proactively remove connections from the pool when an Oracle RAC
 		/// service, service member, or node goes down. Works with RAC, Data Guard, or a single database instance.
 		/// </summary>
-		public bool HAEvents {
-			get;
-			set;
-		}
+		public bool HAEvents { get; set; }
 
 		/// <summary>
 		/// Enables ODP.NET connection pool to balance work requests across Oracle RAC instances based on the load
 		/// balancing advisory and service goal.
 		/// </summary>
-		public bool LoadBalancing {
-			get;
-			set;
-		}
+		public bool LoadBalancing { get; set; }
 
 		/// <summary>
 		/// Number of new connections to be created when all connections in the pool are in use.
 		/// </summary>
-		public uint IncrPoolSize {
-			get;
-			set;
-		}
+		public uint IncrPoolSize { get; set; }
 
 		/// <summary>
 		/// Maximum number of connections in a pool.
 		/// </summary>
-		public uint MaxPoolSize {
-			get;
-			set;
-		}
+		public uint MaxPoolSize { get; set; }
 
 		/// <summary>
 		/// Caches metadata information.
 		/// </summary>
-		public bool MetadataPooling {
-			get;
-			set;
-		}
+		public bool MetadataPooling { get; set; }
 
 		/// <summary>
 		/// Minimum number of connections in a pool.
 		/// </summary>
-		public uint MinPoolSize {
-			get;
-			set;
-		}
+		public uint MinPoolSize { get; set; }
 
 		/// <summary>
 		/// Password for the user specified by User Id.
 		/// </summary>
-		public string Password {
-			get;
-			set;
-		}
+		public string Password { get; set; }
 
 		/// <summary>
 		/// Retrieval of the password in the connection string.
 		/// </summary>
-		public bool PersistSecurityInfo {
-			get;
-			set;
-		}
+		public bool PersistSecurityInfo { get; set; }
 
 		/// <summary>
 		/// Connection pooling.
 		/// </summary>
-		public bool Pooling {
-			get;
-			set;
-		}
+		public bool Pooling { get; set; }
 
 		/// <summary>
 		/// Indicates whether or not a transaction is local or distributed throughout its lifetime.
 		/// </summary>
-		public PromotableTransactions PromotableTransaction {
-			get;
-			set;
-		}
+		public PromotableTransactions PromotableTransaction { get; set; }
 
 		/// <summary>
 		/// User name of the proxy user.
 		/// </summary>
-		public string ProxyUserId {
-			get;
-			set;
-		}
+		public string ProxyUserId { get; set; }
 
 		/// <summary>
 		/// Password of the proxy user.
 		/// </summary>
-		public string ProxyPassword {
-			get;
-			set;
-		}
+		public string ProxyPassword { get; set; }
 
 		/// <summary>
 		/// Statement cache purged when the connection goes back to the pool.
 		/// </summary>
-		public bool StatementCachePurge {
-			get;
-			set;
-		}
+		public bool StatementCachePurge { get; set; }
 
 		/// <summary>
 		/// Statement cache enabled and cache size, that is, the maximum number of statements that can be cached.
 		/// </summary>
-		public uint StatementCacheSize {
-			get;
-			set;
-		}
+		public uint StatementCacheSize { get; set; }
 
 		/// <summary>
 		/// Oracle user name.
 		/// </summary>
-		public string UserId {
-			get;
-			set;
-		}
+		public string UserId { get; set; }
 
 		/// <summary>
 		/// Validation of connections coming from the pool.
 		/// </summary>
-		public bool ValidateConnection {
-			get;
-			set;
-		}
+		public bool ValidateConnection { get; set; }
 		#endregion
 
 		#region Constructor Method

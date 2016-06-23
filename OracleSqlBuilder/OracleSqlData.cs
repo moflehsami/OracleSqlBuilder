@@ -8,62 +8,41 @@ namespace OracleSqlBuilder {
 	/// </summary>
 	public class OracleSqlData {
 		#region Private Property
-		private int _RecordIndex {
-			get;
-			set;
-		}
+		private int _RecordIndex { get; set; }
 		#endregion
 
 		#region Internal Property
 		/// <summary>
 		/// The list of results.
 		/// </summary>
-		internal List<Dictionary<string, object>> ListResults {
-			get;
-			set;
-		}
+		internal List<Dictionary<string, object>> ListResults { get; set; }
 		#endregion
 
 		#region Public Properties
 		/// <summary>
 		/// Results as DataSet.
 		/// </summary>
-		public DataSet DataSetResult {
-			get;
-			internal set;
-		}
+		public DataSet DataSetResult { get; internal set; }
 
 		/// <summary>
 		/// Results as DataTable.
 		/// </summary>
-		public DataTable DataTableResult {
-			get;
-			internal set;
-		}
+		public DataTable DataTableResult { get; internal set; }
 
 		/// <summary>
 		/// Results as DataView.
 		/// </summary>
-		public DataView DataViewResult {
-			get;
-			internal set;
-		}
+		public DataView DataViewResult { get; internal set; }
 
 		/// <summary>
 		/// The number of rows/records.
 		/// </summary>
-		public long RowCount {
-			get;
-			internal set;
-		}
+		public long RowCount { get; internal set; }
 
 		/// <summary>
 		/// The duration of the query.
 		/// </summary>
-		public TimeSpan Duration {
-			get;
-			internal set;
-		}
+		public TimeSpan Duration { get; internal set; }
 		#endregion
 
 		#region Constructor

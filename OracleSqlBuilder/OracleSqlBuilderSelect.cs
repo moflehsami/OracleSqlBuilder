@@ -10,55 +10,16 @@ namespace OracleSqlBuilder {
 	/// </summary>
 	public class OracleSqlBuilderSelect : OracleSqlBuilder {
 		#region Private Properties
-		private string _From {
-			get;
-			set;
-		}
-
-		private bool _IsDistinct {
-			get;
-			set;
-		}
-
-		private List<string> _Fields {
-			get;
-			set;
-		}
-
-		private List<string> _Joins {
-			get;
-			set;
-		}
-
-		private List<string> _Wheres {
-			get;
-			set;
-		}
-
-		private List<string> _Groups {
-			get;
-			set;
-		}
-
-		private bool _IsWithRollUp {
-			get;
-			set;
-		}
-
-		private List<string> _Havings {
-			get;
-			set;
-		}
-
-		private List<string> _Orders {
-			get;
-			set;
-		}
-
-		private double _LimitRowCount {
-			get;
-			set;
-		}
+		private string _From { get; set; }
+		private bool _IsDistinct { get; set; }
+		private List<string> _Fields { get; set; }
+		private List<string> _Joins { get; set; }
+		private List<string> _Wheres { get; set; }
+		private List<string> _Groups { get; set; }
+		private bool _IsWithRollUp { get; set; }
+		private List<string> _Havings { get; set; }
+		private List<string> _Orders { get; set; }
+		private double _LimitRowCount { get; set; }
 		#endregion
 
 		#region Constructor

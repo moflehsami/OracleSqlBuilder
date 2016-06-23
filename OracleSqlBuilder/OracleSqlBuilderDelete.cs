@@ -9,10 +9,7 @@ namespace OracleSqlBuilder {
 	/// </summary>
 	public class OracleSqlBuilderDelete : OracleSqlBuilder {
 		#region Private Property
-		private List<string> _Wheres {
-			get;
-			set;
-		}
+		private List<string> _Wheres { get; set; }
 		#endregion
 
 		#region Constructor

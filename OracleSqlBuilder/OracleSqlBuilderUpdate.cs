@@ -10,15 +10,8 @@ namespace OracleSqlBuilder {
 	/// </summary>
 	public class OracleSqlBuilderUpdate : OracleSqlBuilder {
 		#region Private Property
-		private Dictionary<string, object> _Updates {
-			get;
-			set;
-		}
-
-		private List<string> _Wheres {
-			get;
-			set;
-		}
+		private Dictionary<string, object> _Updates { get; set; }
+		private List<string> _Wheres { get; set; }
 		#endregion
 
 		#region Constructor

@@ -9,18 +9,12 @@ namespace OracleSqlBuilder {
 		/// <summary>
 		/// The number of affected rows.
 		/// </summary>
-		public long AffectedRows {
-			get;
-			internal set;
-		}
+		public long AffectedRows { get; internal set; }
 
 		/// <summary>
 		/// The duration of the query.
 		/// </summary>
-		public TimeSpan Duration {
-			get;
-			internal set;
-		}
+		public TimeSpan Duration { get; internal set; }
 		#endregion
 
 		#region Constructor

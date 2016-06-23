@@ -10,10 +10,7 @@ namespace OracleSqlBuilder {
 	/// </summary>
 	public class OracleSqlBuilderInsert : OracleSqlBuilder {
 		#region Private Property
-		private Dictionary<string, object> _Inserts {
-			get;
-			set;
-		}
+		private Dictionary<string, object> _Inserts { get; set; }
 		#endregion
 
 		#region Constructor
