@@ -14,50 +14,32 @@ namespace OracleSqlBuilder {
 		/// <summary>
 		/// Reserved Keywords property.
 		/// </summary>
-		protected List<string> _ReservedKeywords {
-			get;
-			private set;
-		}
+		protected List<string> _ReservedKeywords { get; private set; }
 
 		/// <summary>
 		/// Virtual Fields property.
 		/// </summary>
-		protected Dictionary<string, string> _VirtualFields {
-			get;
-			private set;
-		}
+		protected Dictionary<string, string> _VirtualFields { get; private set; }
 
 		/// <summary>
 		/// Database property.
 		/// </summary>
-		protected string _Database {
-			get;
-			set;
-		}
+		protected string _Database { get; set; }
 
 		/// <summary>
 		/// Table property.
 		/// </summary>
-		protected string _Table {
-			get;
-			set;
-		}
+		protected string _Table { get; set; }
 
 		/// <summary>
 		/// Table Alias property.
 		/// </summary>
-		protected string _TableAlias {
-			get;
-			set;
-		}
+		protected string _TableAlias { get; set; }
 
 		/// <summary>
 		/// Parameters property.
 		/// </summary>
-		protected Dictionary<string, object> _Parameters {
-			get;
-			private set;
-		}
+		protected Dictionary<string, object> _Parameters { get; private set; }
 		#endregion
 
 		#region Constructor
@@ -245,23 +227,28 @@ namespace OracleSqlBuilder {
 				if (Regex.IsMatch(strValue, @"^[\w]+\.\*$", RegexOptions.IgnoreCase)) {
 					return String.Format("\"{0}", strValue.Replace(".*", "\".*"));
 				}
-				// with functions
-				if (Regex.IsMatch(strValue, @"^([\w]+)\((.*)\)$", RegexOptions.IgnoreCase)) {
-					string[] strMatches = Regex.Split(strValue, @"^([\w]+)\((.*)\)$", RegexOptions.IgnoreCase);
-					return String.Format("{0}({1})", strMatches[1], this._Name(strMatches[2]));
-				}
-				// with alias
-				if (Regex.IsMatch(strValue, @"^([\w]+(\.[\w]+|\(.*\))*)\s+AS\s+([\w]+)$", RegexOptions.IgnoreCase)) {
-					string[] strMatches = Regex.Split(strValue, @"^([\w]+(\.[\w]+|\(.*\))*)\s+AS\s+([\w]+)$", RegexOptions.IgnoreCase);
-					return String.Format("{0} AS {1}", this._Name(strMatches[1]), this._Name(strMatches[2]));
-				}
-				if (Regex.IsMatch(strValue, @"((?<![\\])[\'])((?:.(?!(?<![\\])\1))*.?)\1|[\:\']?[\w]+(?:\.[\w]*)*[\(\']?", RegexOptions.IgnoreCase)) {
+				// with functions and all others
+				if (Regex.IsMatch(strValue, @"((?:\w+\.)?\w+[^\'])(?=(?:[^\']*\'[^\']*\'[^\']*|[^\'])*$)", RegexOptions.IgnoreCase)) {
 					MatchEvaluator evaluator = new MatchEvaluator(this._NameMatched);
-					return Regex.Replace(strValue, @"((?<![\\])[\'])((?:.(?!(?<![\\])\1))*.?)\1|[\:\']?[\w]+(?:\.[\w]*)*[\(\']?", evaluator);
+					return Regex.Replace(strValue, @"((?:\w+\.)?\w+[^\'])(?=(?:[^\']*\'[^\']*\'[^\']*|[^\'])*$)", evaluator);
 				}
-				if (Regex.IsMatch(strValue, @"^[\w\s]*[\w]+", RegexOptions.IgnoreCase)) {
-					return this._EncloseBackTick(strValue);
-				}
+				//// with functions
+				//if (Regex.IsMatch(strValue, @"^([\w]+)\((.*)\)$", RegexOptions.IgnoreCase)) {
+				//	string[] strMatches = Regex.Split(strValue, @"^([\w]+)\((.*)\)$", RegexOptions.IgnoreCase);
+				//	return String.Format("{0}({1})", strMatches[1], this._Name(strMatches[2]));
+				//}
+				//// with alias
+				//if (Regex.IsMatch(strValue, @"^([\w]+(\.[\w]+|\(.*\))*)\s+AS\s+([\w]+)$", RegexOptions.IgnoreCase)) {
+				//	string[] strMatches = Regex.Split(strValue, @"^([\w]+(\.[\w]+|\(.*\))*)\s+AS\s+([\w]+)$", RegexOptions.IgnoreCase);
+				//	return String.Format("{0} AS {1}", this._Name(strMatches[1]), this._Name(strMatches[2]));
+				//}
+				//if (Regex.IsMatch(strValue, @"((?<![\\])[\'])((?:.(?!(?<![\\])\1))*.?)\1|[\:\']?[\w]+(?:\.[\w]*)*[\(\']?", RegexOptions.IgnoreCase)) {
+				//	MatchEvaluator evaluator = new MatchEvaluator(this._NameMatched);
+				//	return Regex.Replace(strValue, @"((?<![\\])[\'])((?:.(?!(?<![\\])\1))*.?)\1|[\:\']?[\w]+(?:\.[\w]*)*[\(\']?", evaluator);
+				//}
+				//if (Regex.IsMatch(strValue, @"^[\w\s]*[\w]+", RegexOptions.IgnoreCase)) {
+				//	return this._EncloseBackTick(strValue);
+				//}
 			}
 			return strValue;
 		}
@@ -323,13 +310,29 @@ namespace OracleSqlBuilder {
 		/// <param name="MatchedValue">The matched value to be formatted.</param>
 		/// <returns>The formatted match value.</returns>
 		private string _NameMatched(Match MatchedValue) {
-			if (!MatchedValue.Value.Contains("(") && !MatchedValue.Value.Contains(":") && !this._ReservedKeywords.Contains(MatchedValue.Value)) {
-				if (Regex.IsMatch(MatchedValue.Value, @"^[\w]+(?:\.[^ \*]*)*$")) {
-					return this._Name(MatchedValue.Value);
+			string strValue = MatchedValue.Value;
+			if (!strValue.Contains("(") && !strValue.Contains("@") && !this._ReservedKeywords.Contains(strValue)) {
+				if (Regex.IsMatch(strValue.Substring(strValue.Length - 1, 1), @"\W", RegexOptions.IgnoreCase)) {
+					return String.Format("{0}{1}", this._Name(strValue.Substring(0, strValue.Length - 1)), strValue.Substring(strValue.Length - 1, 1));
 				}
+				return this._Name(strValue);
 			}
-			return MatchedValue.Value;
+			return strValue;
 		}
+
+		///// <summary>
+		///// Formats the matched value.
+		///// </summary>
+		///// <param name="MatchedValue">The matched value to be formatted.</param>
+		///// <returns>The formatted match value.</returns>
+		//private string _NameMatched(Match MatchedValue) {
+		//	if (!MatchedValue.Value.Contains("(") && !MatchedValue.Value.Contains(":") && !this._ReservedKeywords.Contains(MatchedValue.Value)) {
+		//		if (Regex.IsMatch(MatchedValue.Value, @"^[\w]+(?:\.[^ \*]*)*$")) {
+		//			return this._Name(MatchedValue.Value);
+		//		}
+		//	}
+		//	return MatchedValue.Value;
+		//}
 		#endregion
 	}
 }
