@@ -56,11 +56,19 @@ namespace OracleSqlBuilder {
 
 		#region Public Methods
 		/// <summary>
+		/// Checks if previous record exists.
+		/// </summary>
+		/// <returns>True if next record exists. Otherwise, false.</returns>
+		public bool HasPrevious() {
+			return this._RecordIndex > 0;
+		}
+
+		/// <summary>
 		/// Moves the index to the previous record.
 		/// </summary>
 		public void Previous() {
 			if (this.RowCount == 0) {
-				throw new NullReferenceException("No records are available.");
+				return;
 			}
 			if (!this.HasPrevious()) {
 				throw new IndexOutOfRangeException("The record index is currently at the first record.");
@@ -81,7 +89,7 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		public void Next() {
 			if (this.RowCount == 0) {
-				throw new NullReferenceException("No records are available.");
+				return;
 			}
 			if (!this.HasNext()) {
 				throw new IndexOutOfRangeException("The record index is currently at the last record.");
@@ -90,22 +98,29 @@ namespace OracleSqlBuilder {
 		}
 
 		/// <summary>
-		/// Checks if previous record exists.
-		/// </summary>
-		/// <returns>True if next record exists. Otherwise, false.</returns>
-		public bool HasPrevious() {
-			return this._RecordIndex > 0;
-		}
-
-		/// <summary>
 		/// Gets the first record of the result.
 		/// </summary>
 		/// <returns>The first record.</returns>
 		public Dictionary<string, object> FirstRecord() {
 			if (this.RowCount == 0) {
-				throw new NullReferenceException("No records are available.");
+				return null;
 			}
 			return this.ListResults[0];
+		}
+
+		/// <summary>
+		/// Gets the first record value by key of the result.
+		/// </summary>
+		/// <param name="Key">The key of the record.</param>
+		/// <returns>The value of the record based on its key.</returns>
+		public object FirstRecord(string Key) {
+			if (this.RowCount == 0) {
+				return null;
+			}
+			if (!this.ListResults[0].ContainsKey(Key)) {
+				return null;
+			}
+			return this.FirstRecord()[Key];
 		}
 
 		/// <summary>
@@ -114,7 +129,22 @@ namespace OracleSqlBuilder {
 		/// <returns>The last record.</returns>
 		public Dictionary<string, object> LastRecord() {
 			if (this.RowCount == 0) {
-				throw new NullReferenceException("No records are available.");
+				return null;
+			}
+			return this.ListResults[(int)this.RowCount - 1];
+		}
+
+		/// <summary>
+		/// Gets the last record value by key of the result.
+		/// </summary>
+		/// <param name="Key">The key of the record.</param>
+		/// <returns>The value of the record based on its key.</returns>
+		public object LastRecord(string Key) {
+			if (this.RowCount == 0) {
+				return null;
+			}
+			if (!this.ListResults[(int)this.RowCount - 1].ContainsKey(Key)) {
+				return null;
 			}
 			return this.ListResults[(int)this.RowCount - 1];
 		}
@@ -125,9 +155,24 @@ namespace OracleSqlBuilder {
 		/// <returns>The current record.</returns>
 		public Dictionary<string, object> Record() {
 			if (this.RowCount == 0) {
-				throw new NullReferenceException("No records are available.");
+				return null;
 			}
 			return this.ListResults[this._RecordIndex];
+		}
+
+		/// <summary>
+		/// Gets a specific record value by key of the result.
+		/// </summary>
+		/// <param name="Key">The key of the record.</param>
+		/// <returns>The value of the record based on its key.</returns>
+		public object Record(string Key) {
+			if (this.RowCount == 0) {
+				return null;
+			}
+			if (!this.ListResults[this._RecordIndex].ContainsKey(Key)) {
+				return null;
+			}
+			return this.ListResults[this._RecordIndex][Key];
 		}
 
 		/// <summary>
@@ -137,7 +182,7 @@ namespace OracleSqlBuilder {
 		/// <returns>The record.</returns>
 		public Dictionary<string, object> Record(int RecordIndex) {
 			if (this.RowCount == 0) {
-				throw new NullReferenceException("No records are available.");
+				return null;
 			}
 			if (RecordIndex < 0) {
 				throw new ArgumentOutOfRangeException("Record Index argument should be a positive number including zero '0'.");
@@ -149,14 +194,44 @@ namespace OracleSqlBuilder {
 		}
 
 		/// <summary>
+		/// Gets a specific record value by key of the result.
+		/// </summary>
+		/// <param name="RecordIndex">The record index.</param>
+		/// <param name="Key">The key of the record.</param>
+		/// <returns>The value of the record based on record index and its key.</returns>
+		public object Record(int RecordIndex, string Key) {
+			if (this.RowCount == 0) {
+				return null;
+			}
+			if (RecordIndex < 0) {
+				throw new ArgumentOutOfRangeException("Record Index argument should be a positive number including zero '0'.");
+			}
+			if (RecordIndex >= this.RowCount) {
+				throw new ArgumentOutOfRangeException("Record Index argument is out of range.");
+			}
+			if (!this.ListResults[RecordIndex].ContainsKey(Key)) {
+				return null;
+			}
+			return this.ListResults[RecordIndex][Key];
+		}
+
+		/// <summary>
 		/// Gets the list of records.
 		/// </summary>
 		/// <returns>The list of records.</returns>
 		public List<Dictionary<string, object>> Records() {
 			if (this.RowCount == 0) {
-				throw new NullReferenceException("No records are available.");
+				return null;
 			}
 			return this.ListResults;
+		}
+
+		/// <summary>
+		/// Checks if there are records.
+		/// </summary>
+		/// <returns>True if there are records. Otherwise, false.</returns>
+		public bool HasRecords() {
+			return this.ListResults != null && this.RowCount > 0;
 		}
 		#endregion
 
