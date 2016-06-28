@@ -230,9 +230,9 @@ namespace OracleSqlBuilder {
 					return String.Format("\"{0}", strValue.Replace(".*", "\".*"));
 				}
 				// with functions and all others
-				if (Regex.IsMatch(strValue, @"((?:(?:\w+\.)|\:)?\w+[^\'\`])(?=(?:[^\']*\'[^\']*\'[^\']*)*$)", RegexOptions.IgnoreCase)) {
+				if (Regex.IsMatch(strValue, @"\@?(?:\'[^\']+\'|\w+(?:\s*\()?)", RegexOptions.IgnoreCase)) {
 					MatchEvaluator evaluator = new MatchEvaluator(this._NameMatched);
-					return Regex.Replace(strValue, @"((?:(?:\w+\.)|\:)?\w+[^\'\`])(?=(?:[^\']*\'[^\']*\'[^\']*)*$)", evaluator);
+					return Regex.Replace(strValue, @"\@?(?:\'[^\']+\'|\w+(?:\s*\()?)", evaluator);
 				}
 				//// with functions
 				//if (Regex.IsMatch(strValue, @"^([\w]+)\((.*)\)$", RegexOptions.IgnoreCase)) {
@@ -313,7 +313,7 @@ namespace OracleSqlBuilder {
 		/// <returns>The formatted match value.</returns>
 		private string _NameMatched(Match MatchedValue) {
 			string strValue = MatchedValue.Value;
-			if (!strValue.Contains("(") && !strValue.Contains(":") && !this._ReservedKeywords.Contains(strValue)) {
+			if (!strValue.Contains("(") && !strValue.Contains(":") && !strValue.Contains("'") && !this._ReservedKeywords.Contains(strValue)) {
 				if (Regex.IsMatch(strValue.Substring(strValue.Length - 1, 1), @"\W", RegexOptions.IgnoreCase)) {
 					return String.Format("{0}{1}", this._Name(strValue.Substring(0, strValue.Length - 1)), strValue.Substring(strValue.Length - 1, 1));
 				}
