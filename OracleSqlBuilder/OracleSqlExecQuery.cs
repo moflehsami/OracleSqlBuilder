@@ -76,6 +76,7 @@ namespace OracleSqlBuilder {
 			}
 			watch.Stop();
 			data.Duration = watch.Elapsed;
+			this._PrintDuration(data.Duration);
 			return data;
 		}
 
@@ -87,6 +88,19 @@ namespace OracleSqlBuilder {
 		public OracleSqlData Execute(OracleSqlBuilderSelect Select) {
 			return this.Execute(OracleSqlConnectionString.Read(), Select);
 		}
+		#endregion
+
+		#region Private Methods
+		/// <summary>
+		/// Prints the duration to the output window.
+		/// </summary>
+		/// <param name="Duration">The duration to be printed out.</param>
+		private void _PrintDuration(TimeSpan Duration) {
+			if (!OracleSqlConfig.Debug) {
+				return;
+			}
+			Debug.WriteLine(String.Format("Duration: {0:c}.", Duration));
+		} 
 		#endregion
 	}
 }
