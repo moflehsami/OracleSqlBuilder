@@ -230,9 +230,9 @@ namespace OracleSqlBuilder {
 					return String.Format("\"{0}", strValue.Replace(".*", "\".*"));
 				}
 				// with functions and all others
-				if (Regex.IsMatch(strValue, @"\@?(?:\'[^\']+\'|\w+(?:\s*\()?)", RegexOptions.IgnoreCase)) {
+				if (Regex.IsMatch(strValue, @"\@?(?:\'[^\']+\'|(?:(?:\w\.)?\w)+(?:\s*\()?)", RegexOptions.IgnoreCase)) {
 					MatchEvaluator evaluator = new MatchEvaluator(this._NameMatched);
-					return Regex.Replace(strValue, @"\@?(?:\'[^\']+\'|\w+(?:\s*\()?)", evaluator);
+					return Regex.Replace(strValue, @"\@?(?:\'[^\']+\'|(?:(?:\w\.)?\w)+(?:\s*\()?)", evaluator);
 				}
 				//// with functions
 				//if (Regex.IsMatch(strValue, @"^([\w]+)\((.*)\)$", RegexOptions.IgnoreCase)) {
