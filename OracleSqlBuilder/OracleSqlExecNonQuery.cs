@@ -72,6 +72,7 @@ namespace OracleSqlBuilder {
 			}
 			watch.Stop();
 			data.Duration = watch.Elapsed;
+			this._PrintAffectedRows(data.AffectedRows);
 			this._PrintDuration(data.Duration);
 			return data;
 		}
@@ -147,6 +148,7 @@ namespace OracleSqlBuilder {
 			}
 			watch.Stop();
 			data.Duration = watch.Elapsed;
+			this._PrintAffectedRows(data.AffectedRows);
 			this._PrintDuration(data.Duration);
 			return data;
 		}
@@ -222,6 +224,7 @@ namespace OracleSqlBuilder {
 			}
 			watch.Stop();
 			data.Duration = watch.Elapsed;
+			this._PrintAffectedRows(data.AffectedRows);
 			this._PrintDuration(data.Duration);
 			return data;
 		}
@@ -237,6 +240,17 @@ namespace OracleSqlBuilder {
 		#endregion
 
 		#region Private Methods
+		/// <summary>
+		/// Prints the affected rows to the output window.
+		/// </summary>
+		/// <param name="AffectedRows">The affected rows to be printed out.</param>
+		private void _PrintAffectedRows(long AffectedRows) {
+			if (!MySqlConfig.Debug) {
+				return;
+			}
+			Debug.WriteLine(String.Format("Affected Rows: {0:n0}.", AffectedRows));
+		}
+
 		/// <summary>
 		/// Prints the duration to the output window.
 		/// </summary>
