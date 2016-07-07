@@ -97,7 +97,7 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="RowCount">The number of rows to be printed out.</param>
 		private void _PrintRowsFound(long RowCount) {
-			if (!MySqlConfig.Debug) {
+			if (!OracleSqlConfig.Debug) {
 				return;
 			}
 			Debug.WriteLine(String.Format("Rows Found: {0:n0}.", RowCount));

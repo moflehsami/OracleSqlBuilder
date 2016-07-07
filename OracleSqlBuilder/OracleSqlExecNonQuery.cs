@@ -245,7 +245,7 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="AffectedRows">The affected rows to be printed out.</param>
 		private void _PrintAffectedRows(long AffectedRows) {
-			if (!MySqlConfig.Debug) {
+			if (!OracleSqlConfig.Debug) {
 				return;
 			}
 			Debug.WriteLine(String.Format("Affected Rows: {0:n0}.", AffectedRows));
