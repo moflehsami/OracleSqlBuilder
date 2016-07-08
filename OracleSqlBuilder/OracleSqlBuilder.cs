@@ -234,23 +234,6 @@ namespace OracleSqlBuilder {
 					MatchEvaluator evaluator = new MatchEvaluator(this._NameMatched);
 					return Regex.Replace(strValue, @"\:?(?:\'[^\']*\'|(?:(?:\w\.)?\w)+(?:\s*\()?)", evaluator);
 				}
-				//// with functions
-				//if (Regex.IsMatch(strValue, @"^([\w]+)\((.*)\)$", RegexOptions.IgnoreCase)) {
-				//	string[] strMatches = Regex.Split(strValue, @"^([\w]+)\((.*)\)$", RegexOptions.IgnoreCase);
-				//	return String.Format("{0}({1})", strMatches[1], this._Name(strMatches[2]));
-				//}
-				//// with alias
-				//if (Regex.IsMatch(strValue, @"^([\w]+(\.[\w]+|\(.*\))*)\s+AS\s+([\w]+)$", RegexOptions.IgnoreCase)) {
-				//	string[] strMatches = Regex.Split(strValue, @"^([\w]+(\.[\w]+|\(.*\))*)\s+AS\s+([\w]+)$", RegexOptions.IgnoreCase);
-				//	return String.Format("{0} AS {1}", this._Name(strMatches[1]), this._Name(strMatches[2]));
-				//}
-				//if (Regex.IsMatch(strValue, @"((?<![\\])[\'])((?:.(?!(?<![\\])\1))*.?)\1|[\:\']?[\w]+(?:\.[\w]*)*[\(\']?", RegexOptions.IgnoreCase)) {
-				//	MatchEvaluator evaluator = new MatchEvaluator(this._NameMatched);
-				//	return Regex.Replace(strValue, @"((?<![\\])[\'])((?:.(?!(?<![\\])\1))*.?)\1|[\:\']?[\w]+(?:\.[\w]*)*[\(\']?", evaluator);
-				//}
-				//if (Regex.IsMatch(strValue, @"^[\w\s]*[\w]+", RegexOptions.IgnoreCase)) {
-				//	return this._EncloseBackTick(strValue);
-				//}
 			}
 			return strValue;
 		}
@@ -321,20 +304,6 @@ namespace OracleSqlBuilder {
 			}
 			return strValue;
 		}
-
-		///// <summary>
-		///// Formats the matched value.
-		///// </summary>
-		///// <param name="MatchedValue">The matched value to be formatted.</param>
-		///// <returns>The formatted match value.</returns>
-		//private string _NameMatched(Match MatchedValue) {
-		//	if (!MatchedValue.Value.Contains("(") && !MatchedValue.Value.Contains(":") && !this._ReservedKeywords.Contains(MatchedValue.Value)) {
-		//		if (Regex.IsMatch(MatchedValue.Value, @"^[\w]+(?:\.[^ \*]*)*$")) {
-		//			return this._Name(MatchedValue.Value);
-		//		}
-		//	}
-		//	return MatchedValue.Value;
-		//}
 		#endregion
 	}
 }

@@ -273,6 +273,39 @@ namespace OracleSqlBuilder {
 		}
 
 		/// <summary>
+		/// Adds a LEFT JOIN clause.
+		/// </summary>
+		/// <param name="Selects">The list of OracleSqlBuilderSelect instances.</param>
+		/// <param name="TableAlias">The alias of the table.</param>
+		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
+		/// <returns>The current instance of this class.</returns>
+		public OracleSqlBuilderSelect SetLeftJoin(List<OracleSqlBuilderSelect> Selects, string TableAlias, string ConditionStatement) {
+			if (Selects == null) {
+				throw new ArgumentException("Selects argument should not be null.");
+			}
+			List<string> lstQueries = new List<string>();
+			foreach (var Select in Selects) {
+				if (Select == null) {
+					throw new ArgumentException("A member of Selects argument should not be null.");
+				}
+				if (String.IsNullOrWhiteSpace(Select.ToString())) {
+					throw new ArgumentException("A member of Selects argument should not be empty.");
+				}
+				lstQueries.Add(Select.ToString());
+			}
+			TableAlias = this._RemoveBackTick(TableAlias);
+			if (String.IsNullOrWhiteSpace(TableAlias)) {
+				throw new ArgumentException("TableAlias argument should not be empty.");
+			}
+			ConditionStatement = this._RemoveBackTick(ConditionStatement);
+			if (String.IsNullOrWhiteSpace(ConditionStatement)) {
+				throw new ArgumentException("Condition argument should not be empty.");
+			}
+			this._Joins.Add(String.Format("LEFT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(String.Format("({0})", String.Join(") UNION (", lstQueries.ToArray()))), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+			return this;
+		}
+
+		/// <summary>
 		/// Adds a RIGHT JOIN clause.
 		/// </summary>
 		/// <param name="Database">The database of the table to be joined.</param>
@@ -374,6 +407,39 @@ namespace OracleSqlBuilder {
 				throw new ArgumentException("Condition argument should not be empty.");
 			}
 			this._Joins.Add(String.Format("RIGHT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(strQuery), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+			return this;
+		}
+
+		/// <summary>
+		/// Adds a LEFT JOIN clause.
+		/// </summary>
+		/// <param name="Selects">The list of OracleSqlBuilderSelect instances.</param>
+		/// <param name="TableAlias">The alias of the table.</param>
+		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
+		/// <returns>The current instance of this class.</returns>
+		public OracleSqlBuilderSelect SetRightJoin(List<OracleSqlBuilderSelect> Selects, string TableAlias, string ConditionStatement) {
+			if (Selects == null) {
+				throw new ArgumentException("Selects argument should not be null.");
+			}
+			List<string> lstQueries = new List<string>();
+			foreach (var Select in Selects) {
+				if (Select == null) {
+					throw new ArgumentException("A member of Selects argument should not be null.");
+				}
+				if (String.IsNullOrWhiteSpace(Select.ToString())) {
+					throw new ArgumentException("A member of Selects argument should not be empty.");
+				}
+				lstQueries.Add(Select.ToString());
+			}
+			TableAlias = this._RemoveBackTick(TableAlias);
+			if (String.IsNullOrWhiteSpace(TableAlias)) {
+				throw new ArgumentException("TableAlias argument should not be empty.");
+			}
+			ConditionStatement = this._RemoveBackTick(ConditionStatement);
+			if (String.IsNullOrWhiteSpace(ConditionStatement)) {
+				throw new ArgumentException("Condition argument should not be empty.");
+			}
+			this._Joins.Add(String.Format("RIGHT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(String.Format("({0})", String.Join(") UNION (", lstQueries.ToArray()))), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
 			return this;
 		}
 
