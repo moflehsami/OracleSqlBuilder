@@ -8,7 +8,7 @@ namespace OracleSqlBuilder {
 	/// <summary>
 	/// OracleSql Builder Update class.
 	/// </summary>
-	public class OracleSqlBuilderUpdate : OracleSqlBuilder {
+	public class OracleSqlBuilderUpdate : OracleSqlBuilderNonQuery {
 		#region Private Property
 		private Dictionary<string, object> _Updates { get; set; }
 		private List<string> _Wheres { get; set; }

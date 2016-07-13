@@ -8,7 +8,7 @@ namespace OracleSqlBuilder {
 	/// <summary>
 	/// OracleSql Builder Insert class.
 	/// </summary>
-	public class OracleSqlBuilderInsert : OracleSqlBuilder {
+	public class OracleSqlBuilderInsert : OracleSqlBuilderNonQuery {
 		#region Private Property
 		private Dictionary<string, object> _Inserts { get; set; }
 		#endregion

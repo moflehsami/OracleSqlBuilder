@@ -7,7 +7,7 @@ namespace OracleSqlBuilder {
 	/// <summary>
 	/// OracleSql Builder Delete class.
 	/// </summary>
-	public class OracleSqlBuilderDelete : OracleSqlBuilder {
+	public class OracleSqlBuilderDelete : OracleSqlBuilderNonQuery {
 		#region Private Property
 		private List<string> _Wheres { get; set; }
 		#endregion

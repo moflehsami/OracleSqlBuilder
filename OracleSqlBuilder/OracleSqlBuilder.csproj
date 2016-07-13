@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
+    <Compile Include="OracleSqlBuilderNonQuery.cs" />
+    <Compile Include="OracleSqlBuilderQuery.cs" />
     <Compile Include="OracleSqlExecNonQuery.cs" />
     <Compile Include="OracleSqlNonData.cs" />
     <Compile Include="OracleSqlBuilderDelete.cs" />

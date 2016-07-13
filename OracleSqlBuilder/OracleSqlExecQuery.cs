@@ -9,14 +9,14 @@ namespace OracleSqlBuilder {
 	/// OracleSql Exec Query class.
 	/// </summary>
 	public class OracleSqlExecQuery {
-		#region Public Methods
+		#region Internal Methods
 		/// <summary>
 		/// Executes a query and returns a OracleSqlData instance.
 		/// </summary>
 		/// <param name="ConnectionString">The connection string.</param>
 		/// <param name="Select">The instance of OracleSqlBuilderSelect.</param>
 		/// <returns>The instance of OracleSqlData.</returns>
-		public OracleSqlData Execute(string ConnectionString, OracleSqlBuilderSelect Select) {
+		internal OracleSqlData Execute(string ConnectionString, OracleSqlBuilderSelect Select) {
 			if (String.IsNullOrWhiteSpace(ConnectionString)) {
 				throw new ArgumentNullException("Connection String argument should not be null.");
 			}
@@ -86,7 +86,7 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="Select">The instance of OracleSqlBuilderSelect.</param>
 		/// <returns>The instance of OracleSqlData.</returns>
-		public OracleSqlData Execute(OracleSqlBuilderSelect Select) {
+		internal OracleSqlData Execute(OracleSqlBuilderSelect Select) {
 			return this.Execute(OracleSqlConnectionString.Read(), Select);
 		}
 		#endregion

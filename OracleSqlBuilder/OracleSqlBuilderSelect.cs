@@ -8,7 +8,7 @@ namespace OracleSqlBuilder {
 	/// <summary>
 	/// OracleSql Builder Select class.
 	/// </summary>
-	public class OracleSqlBuilderSelect : OracleSqlBuilder {
+	public class OracleSqlBuilderSelect : OracleSqlBuilderQuery {
 		#region Private Properties
 		private string _From { get; set; }
 		private bool _IsDistinct { get; set; }
