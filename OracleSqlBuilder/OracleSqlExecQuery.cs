@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Oracle.ManagedDataAccess.Client;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using Oracle.ManagedDataAccess.Client;
 
 namespace OracleSqlBuilder {
 	/// <summary>
 	/// OracleSql Exec Query class.
 	/// </summary>
-	public class OracleSqlExecQuery {
+	internal class OracleSqlExecQuery {
 		#region Internal Methods
 		/// <summary>
 		/// Executes a query and returns a OracleSqlData instance.
@@ -23,25 +23,25 @@ namespace OracleSqlBuilder {
 			if (Select == null) {
 				throw new ArgumentNullException("Select argument should not be null.");
 			}
-			Stopwatch watch = new Stopwatch();
+			var watch = new Stopwatch();
 			watch.Start();
-			OracleSqlData data = new OracleSqlData();
-			using (OracleConnection cn = new OracleConnection()) {
+			var data = new OracleSqlData();
+			using (var cn = new OracleConnection()) {
 				cn.ConnectionString = ConnectionString;
 				try {
 					cn.Open();
-					using (OracleCommand cmd = new OracleCommand()) {
+					using (var cmd = new OracleCommand()) {
 						cmd.Connection = cn;
 						cmd.CommandText = Select.ToString();
 						cmd.CommandType = CommandType.Text;
 						Select.PrintQuery();
 						if (Select.GetParameters().Count > 0) {
-							foreach (KeyValuePair<string, object> kvp in Select.GetParameters()) {
+							foreach (var kvp in Select.GetParameters()) {
 								cmd.Parameters.Add(new OracleParameter(kvp.Key, kvp.Value));
 							}
 							Select.PrintParameters();
 						}
-						using (OracleDataAdapter da = new OracleDataAdapter()) {
+						using (var da = new OracleDataAdapter()) {
 							da.SelectCommand = cmd;
 							try {
 								da.Fill(data.DataSetResult);
@@ -61,12 +61,20 @@ namespace OracleSqlBuilder {
 								Debug.WriteLine("An error occured while trying to execute the query.");
 								Debug.WriteLine(String.Format("OracleSQL Error: {0} - {1}", ex.ErrorCode, ex.Message));
 								Debug.WriteLine(ex);
+							} catch (Exception ex) {
+								Debug.WriteLine("An error occured while trying to execute the query.");
+								Debug.WriteLine(String.Format("Error: {0}", ex.Message));
+								Debug.WriteLine(ex);
 							}
 						}
 					}
 				} catch (OracleException ex) {
 					Debug.WriteLine("Unable to connect to the specified OracleSQL host.");
 					Debug.WriteLine(String.Format("OracleSQL Error: {0} - {1}", ex.ErrorCode, ex.Message));
+					Debug.WriteLine(ex);
+				} catch (Exception ex) {
+					Debug.WriteLine("Unable to connect to the specified OracleSQL host.");
+					Debug.WriteLine(String.Format("Error: {0}", ex.Message));
 					Debug.WriteLine(ex);
 				} finally {
 					if (cn != null && cn.State == ConnectionState.Open) {
