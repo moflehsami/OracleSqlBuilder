@@ -5,13 +5,12 @@ using System.Text;
 
 namespace OracleSqlBuilder {
 	/// <summary>
-	/// OracleSql Builder Select class.
+	/// OracleSql Builder Select Count class.
 	/// </summary>
-	public class OracleSqlBuilderSelect : OracleSqlBuilderQuery {
+	public class OracleSqlBuilderSelectCount : OracleSqlBuilderQuery {
 		#region Private Properties
 		private string _From { get; set; }
 		private bool _IsDistinct { get; set; }
-		private List<string> _Fields { get; set; }
 		private List<string> _Joins { get; set; }
 		private List<string> _Wheres { get; set; }
 		private List<string> _Groups { get; set; }
@@ -28,7 +27,7 @@ namespace OracleSqlBuilder {
 		/// <param name="Database">The database of the query.</param>
 		/// <param name="Table">The table of the query.</param>
 		/// <param name="TableAlias">The alias of the table.</param>
-		public OracleSqlBuilderSelect(string Database, string Table, string TableAlias) {
+		public OracleSqlBuilderSelectCount(string Database, string Table, string TableAlias) {
 			if (String.IsNullOrWhiteSpace(Database)) {
 				throw new ArgumentException("Database argument should not be empty.");
 			}
@@ -57,29 +56,8 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="Database">The database of the query.</param>
 		/// <param name="Table">The table of the query.</param>
-		public OracleSqlBuilderSelect(string Database, string Table)
+		public OracleSqlBuilderSelectCount(string Database, string Table)
 			: this(Database, Table, null) {
-		}
-
-		/// <summary>
-		/// Initializes the query as a table, and table alias for the SELECT statement.
-		/// </summary>
-		/// <param name="Select">The OracleSqlBuilderSelect instance.</param>
-		/// <param name="TableAlias">The alias of the query.</param>
-		public OracleSqlBuilderSelect(OracleSqlBuilderSelect Select, string TableAlias) {
-			if (Select == null) {
-				throw new ArgumentException("Select argument should not be null.");
-			}
-			string strQuery = Select.ToString();
-			if (String.IsNullOrWhiteSpace(strQuery)) {
-				throw new ArgumentException("Select argument should not be empty.");
-			}
-			if (String.IsNullOrWhiteSpace(TableAlias)) {
-				throw new ArgumentException("TableAlias argument should not be empty.");
-			}
-			this._Table = String.Format("(\n{0}\n)", this._AddTab(strQuery));
-			this._TableAlias = this._RemoveBackTick(TableAlias);
-			this._InitProperties();
 		}
 		#endregion
 
@@ -90,7 +68,7 @@ namespace OracleSqlBuilder {
 		/// <param name="Name">The name of the virtual field.</param>
 		/// <param name="Expression">The query expression.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetVirtualField(string Name, string Expression) {
+		public OracleSqlBuilderSelectCount SetVirtualField(string Name, string Expression) {
 			this._SetVirtualField(Name, Expression);
 			return this;
 		}
@@ -100,7 +78,7 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="Name">The name of the parameter.</param>
 		/// <param name="Value">The value of the parameter.</param>
-		public OracleSqlBuilderSelect SetParameter(string Name, string Value) {
+		public OracleSqlBuilderSelectCount SetParameter(string Name, string Value) {
 			this._SetParameter(Name, Value);
 			return this;
 		}
@@ -110,59 +88,8 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="Distinct">Is the query distinct?</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetDistinct(bool Distinct) {
+		public OracleSqlBuilderSelectCount SetDistinct(bool Distinct) {
 			this._IsDistinct = Distinct;
-			return this;
-		}
-
-		/// <summary>
-		/// Adds an expression/column to the SELECT clause.
-		/// </summary>
-		/// <param name="Expression">The expression/column to be added.</param>
-		/// <param name="Alias">The alias of the expression.</param>
-		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetSelect(string Expression, string Alias) {
-			if (String.IsNullOrWhiteSpace(Expression)) {
-				throw new ArgumentException("Expression argument should not be empty.");
-			}
-			if (!this._IsValidExpression(Expression)) {
-				throw new ArgumentException(String.Format("Expression argument '{0}' is not a valid format.", Expression));
-			}
-			if (this._VirtualFields.ContainsKey(Expression) && String.IsNullOrWhiteSpace(Alias)) {
-				Alias = Expression;
-			}
-			this._Fields.Add(String.Format("{0}{1}", this._Name(Expression), String.IsNullOrWhiteSpace(Alias) ? null : String.Format(" AS {0}", this._EncloseBackTick(this._RemoveBackTick(Alias)))));
-			return this;
-		}
-
-		/// <summary>
-		/// Adds an expression/column to the SELECT clause.
-		/// </summary>
-		/// <param name="Expression">The expression/column to be added.</param>
-		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetSelect(string Expression) {
-			this.SetSelect(Expression, null);
-			return this;
-		}
-
-		/// <summary>
-		/// Adds an expression/column to the SELECT clause.
-		/// </summary>
-		/// <param name="Select">The OracleSqlBuilderSelect instance.</param>
-		/// <param name="Alias">The alias of the expression.</param>
-		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetSelect(OracleSqlBuilderSelect Select, string Alias) {
-			if (Select == null) {
-				throw new ArgumentException("Select argument should not be null.");
-			}
-			string strQuery = Select.ToString();
-			if (String.IsNullOrWhiteSpace(strQuery)) {
-				throw new ArgumentException("Select argument should not be empty.");
-			}
-			if (String.IsNullOrWhiteSpace(Alias)) {
-				throw new ArgumentException("Alias argument should not be empty.");
-			}
-			this._Fields.Add(String.Format("(\n{0}\n) AS {1}", this._AddTab(strQuery), this._EncloseBackTick(this._RemoveBackTick(Alias))));
 			return this;
 		}
 
@@ -174,7 +101,7 @@ namespace OracleSqlBuilder {
 		/// <param name="TableAlias">The alias of the table.</param>
 		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetLeftJoin(string Database, string Table, string TableAlias, string ConditionStatement) {
+		public OracleSqlBuilderSelectCount SetLeftJoin(string Database, string Table, string TableAlias, string ConditionStatement) {
 			if (String.IsNullOrWhiteSpace(Database)) {
 				throw new ArgumentException("Database argument should not be empty.");
 			}
@@ -206,7 +133,7 @@ namespace OracleSqlBuilder {
 		/// <param name="TableAlias">The alias of the table.</param>
 		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetLeftJoin(string Table, string TableAlias, string ConditionStatement) {
+		public OracleSqlBuilderSelectCount SetLeftJoin(string Table, string TableAlias, string ConditionStatement) {
 			if (String.IsNullOrWhiteSpace(Table)) {
 				throw new ArgumentException("Table argument should not be empty.");
 			}
@@ -231,7 +158,7 @@ namespace OracleSqlBuilder {
 		/// <param name="TableAlias">The alias of the table.</param>
 		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetLeftJoin(string TableAlias, string ConditionStatement) {
+		public OracleSqlBuilderSelectCount SetLeftJoin(string TableAlias, string ConditionStatement) {
 			TableAlias = this._RemoveBackTick(TableAlias);
 			if (String.IsNullOrWhiteSpace(TableAlias)) {
 				throw new ArgumentException("TableAlias argument should not be empty.");
@@ -245,66 +172,6 @@ namespace OracleSqlBuilder {
 		}
 
 		/// <summary>
-		/// Adds a LEFT JOIN clause.
-		/// </summary>
-		/// <param name="Select">The OracleSqlBuilderSelect instance.</param>
-		/// <param name="TableAlias">The alias of the table.</param>
-		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
-		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetLeftJoin(OracleSqlBuilderSelect Select, string TableAlias, string ConditionStatement) {
-			if (Select == null) {
-				throw new ArgumentException("Select argument should not be null.");
-			}
-			string strQuery = Select.ToString();
-			if (String.IsNullOrWhiteSpace(strQuery)) {
-				throw new ArgumentException("Select argument should not be empty.");
-			}
-			TableAlias = this._RemoveBackTick(TableAlias);
-			if (String.IsNullOrWhiteSpace(TableAlias)) {
-				throw new ArgumentException("TableAlias argument should not be empty.");
-			}
-			ConditionStatement = this._RemoveBackTick(ConditionStatement);
-			if (String.IsNullOrWhiteSpace(ConditionStatement)) {
-				throw new ArgumentException("Condition argument should not be empty.");
-			}
-			this._Joins.Add(String.Format("LEFT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(strQuery), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
-			return this;
-		}
-
-		/// <summary>
-		/// Adds a LEFT JOIN clause.
-		/// </summary>
-		/// <param name="Selects">The list of OracleSqlBuilderSelect instances.</param>
-		/// <param name="TableAlias">The alias of the table.</param>
-		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
-		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetLeftJoin(List<OracleSqlBuilderSelect> Selects, string TableAlias, string ConditionStatement) {
-			if (Selects == null) {
-				throw new ArgumentException("Selects argument should not be null.");
-			}
-			List<string> lstQueries = new List<string>();
-			foreach (var Select in Selects) {
-				if (Select == null) {
-					throw new ArgumentException("A member of Selects argument should not be null.");
-				}
-				if (String.IsNullOrWhiteSpace(Select.ToString())) {
-					throw new ArgumentException("A member of Selects argument should not be empty.");
-				}
-				lstQueries.Add(Select.ToString());
-			}
-			TableAlias = this._RemoveBackTick(TableAlias);
-			if (String.IsNullOrWhiteSpace(TableAlias)) {
-				throw new ArgumentException("TableAlias argument should not be empty.");
-			}
-			ConditionStatement = this._RemoveBackTick(ConditionStatement);
-			if (String.IsNullOrWhiteSpace(ConditionStatement)) {
-				throw new ArgumentException("Condition argument should not be empty.");
-			}
-			this._Joins.Add(String.Format("LEFT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(String.Format("({0})", String.Join(") UNION (", lstQueries.ToArray()))), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
-			return this;
-		}
-
-		/// <summary>
 		/// Adds a RIGHT JOIN clause.
 		/// </summary>
 		/// <param name="Database">The database of the table to be joined.</param>
@@ -312,7 +179,7 @@ namespace OracleSqlBuilder {
 		/// <param name="TableAlias">The alias of the table.</param>
 		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetRightJoin(string Database, string Table, string TableAlias, string ConditionStatement) {
+		public OracleSqlBuilderSelectCount SetRightJoin(string Database, string Table, string TableAlias, string ConditionStatement) {
 			if (String.IsNullOrWhiteSpace(Database)) {
 				throw new ArgumentException("Database argument should not be empty.");
 			}
@@ -344,7 +211,7 @@ namespace OracleSqlBuilder {
 		/// <param name="TableAlias">The alias of the table.</param>
 		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetRightJoin(string Table, string TableAlias, string ConditionStatement) {
+		public OracleSqlBuilderSelectCount SetRightJoin(string Table, string TableAlias, string ConditionStatement) {
 			if (String.IsNullOrWhiteSpace(Table)) {
 				throw new ArgumentException("Table argument should not be empty.");
 			}
@@ -369,7 +236,7 @@ namespace OracleSqlBuilder {
 		/// <param name="TableAlias">The alias of the table.</param>
 		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetRightJoin(string TableAlias, string ConditionStatement) {
+		public OracleSqlBuilderSelectCount SetRightJoin(string TableAlias, string ConditionStatement) {
 			TableAlias = this._RemoveBackTick(TableAlias);
 			if (String.IsNullOrWhiteSpace(TableAlias)) {
 				throw new ArgumentException("TableAlias argument should not be empty.");
@@ -383,73 +250,13 @@ namespace OracleSqlBuilder {
 		}
 
 		/// <summary>
-		/// Adds a RIGHT JOIN clause.
-		/// </summary>
-		/// <param name="Select">The OracleSqlBuilderSelect instance.</param>
-		/// <param name="TableAlias">The alias of the table.</param>
-		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
-		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetRightJoin(OracleSqlBuilderSelect Select, string TableAlias, string ConditionStatement) {
-			if (Select == null) {
-				throw new ArgumentException("Select argument should not be null.");
-			}
-			string strQuery = Select.ToString();
-			if (String.IsNullOrWhiteSpace(strQuery)) {
-				throw new ArgumentException("Select argument should not be empty.");
-			}
-			TableAlias = this._RemoveBackTick(TableAlias);
-			if (String.IsNullOrWhiteSpace(TableAlias)) {
-				throw new ArgumentException("TableAlias argument should not be empty.");
-			}
-			ConditionStatement = this._RemoveBackTick(ConditionStatement);
-			if (String.IsNullOrWhiteSpace(ConditionStatement)) {
-				throw new ArgumentException("Condition argument should not be empty.");
-			}
-			this._Joins.Add(String.Format("RIGHT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(strQuery), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
-			return this;
-		}
-
-		/// <summary>
-		/// Adds a LEFT JOIN clause.
-		/// </summary>
-		/// <param name="Selects">The list of OracleSqlBuilderSelect instances.</param>
-		/// <param name="TableAlias">The alias of the table.</param>
-		/// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
-		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetRightJoin(List<OracleSqlBuilderSelect> Selects, string TableAlias, string ConditionStatement) {
-			if (Selects == null) {
-				throw new ArgumentException("Selects argument should not be null.");
-			}
-			List<string> lstQueries = new List<string>();
-			foreach (var Select in Selects) {
-				if (Select == null) {
-					throw new ArgumentException("A member of Selects argument should not be null.");
-				}
-				if (String.IsNullOrWhiteSpace(Select.ToString())) {
-					throw new ArgumentException("A member of Selects argument should not be empty.");
-				}
-				lstQueries.Add(Select.ToString());
-			}
-			TableAlias = this._RemoveBackTick(TableAlias);
-			if (String.IsNullOrWhiteSpace(TableAlias)) {
-				throw new ArgumentException("TableAlias argument should not be empty.");
-			}
-			ConditionStatement = this._RemoveBackTick(ConditionStatement);
-			if (String.IsNullOrWhiteSpace(ConditionStatement)) {
-				throw new ArgumentException("Condition argument should not be empty.");
-			}
-			this._Joins.Add(String.Format("RIGHT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(String.Format("({0})", String.Join(") UNION (", lstQueries.ToArray()))), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
-			return this;
-		}
-
-		/// <summary>
 		/// Adds a condition to the WHERE clause.
 		/// </summary>
 		/// <param name="Condition">The condition to check before adding to the WHERE clause.</param>
 		/// <param name="ConditionStatement">The condition statement/s to be added.</param>
 		/// <param name="ParameterValues">The arguments to be passed for formatting a string.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetWhere(bool Condition, string ConditionStatement, params object[] ParameterValues) {
+		public OracleSqlBuilderSelectCount SetWhere(bool Condition, string ConditionStatement, params object[] ParameterValues) {
 			if (Condition) {
 				ConditionStatement = this._RemoveBackTick(ConditionStatement);
 				if (String.IsNullOrWhiteSpace(ConditionStatement)) {
@@ -474,7 +281,7 @@ namespace OracleSqlBuilder {
 		/// <param name="ConditionStatement">The condition statement/s to be added.</param>
 		/// <param name="ParameterValues">The arguments to be passed for formatting a string.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetWhere(string ConditionStatement, params object[] ParameterValues) {
+		public OracleSqlBuilderSelectCount SetWhere(string ConditionStatement, params object[] ParameterValues) {
 			return this.SetWhere(true, ConditionStatement, ParameterValues);
 		}
 
@@ -483,7 +290,7 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="Expressions">Additional expressions to be added.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetGroupBy(params string[] Expressions) {
+		public OracleSqlBuilderSelectCount SetGroupBy(params string[] Expressions) {
 			if (Expressions != null & Expressions.Length > 0) {
 				foreach (string strExpression in Expressions) {
 					if (String.IsNullOrWhiteSpace(strExpression)) {
@@ -503,7 +310,7 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="WithRollUp"></param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetWithRollUp(bool WithRollUp) {
+		public OracleSqlBuilderSelectCount SetWithRollUp(bool WithRollUp) {
 			this._IsWithRollUp = WithRollUp;
 			return this;
 		}
@@ -515,7 +322,7 @@ namespace OracleSqlBuilder {
 		/// <param name="ConditionStatement">The condition statement/s to be added.</param>
 		/// <param name="ParameterValues">The arguments to be passed for formatting a string.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetHaving(bool Condition, string ConditionStatement, params object[] ParameterValues) {
+		public OracleSqlBuilderSelectCount SetHaving(bool Condition, string ConditionStatement, params object[] ParameterValues) {
 			if (Condition) {
 				ConditionStatement = this._RemoveBackTick(ConditionStatement);
 				if (String.IsNullOrWhiteSpace(ConditionStatement)) {
@@ -540,7 +347,7 @@ namespace OracleSqlBuilder {
 		/// <param name="ConditionStatement">The condition statement/s to be added.</param>
 		/// <param name="ParameterValues">The arguments to be passed for formatting a string.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetHaving(string ConditionStatement, params object[] ParameterValues) {
+		public OracleSqlBuilderSelectCount SetHaving(string ConditionStatement, params object[] ParameterValues) {
 			return this.SetHaving(true, ConditionStatement, ParameterValues);
 		}
 
@@ -550,7 +357,7 @@ namespace OracleSqlBuilder {
 		/// <param name="Direction">The order direction of the expression/s.</param>
 		/// <param name="Expressions">The expression to be ordered.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetOrderBy(OrderDirections Direction, params string[] Expressions) {
+		public OracleSqlBuilderSelectCount SetOrderBy(OrderDirections Direction, params string[] Expressions) {
 			if (Expressions != null & Expressions.Length > 0) {
 				List<string> lstExpression = new List<string>();
 				foreach (string strExpression in Expressions) {
@@ -574,7 +381,7 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="Expressions">The expression to be ordered.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetOrderBy(params string[] Expressions) {
+		public OracleSqlBuilderSelectCount SetOrderBy(params string[] Expressions) {
 			this.SetOrderBy(OrderDirections.Asc, Expressions);
 			return this;
 		}
@@ -584,7 +391,7 @@ namespace OracleSqlBuilder {
 		/// </summary>
 		/// <param name="RowCount">The row count limit.</param>
 		/// <returns>The current instance of this class.</returns>
-		public OracleSqlBuilderSelect SetLimit(double RowCount) {
+		public OracleSqlBuilderSelectCount SetLimit(double RowCount) {
 			this._LimitRowCount = RowCount;
 			return this;
 		}
@@ -598,11 +405,7 @@ namespace OracleSqlBuilder {
 		public override string ToString() {
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine("SELECT");
-			if (this._Fields.Count > 0) {
-				sb.AppendLine(String.Format("\t{0}", String.Join(",\n\t", this._Fields)));
-			} else {
-				sb.AppendLine("\t*");
-			}
+			sb.AppendLine("\tCOUNT(*) AS \"ROW_COUNT\"\n");
 			sb.AppendLine(String.Format("FROM {0}", this._From));
 			if (this._Joins.Count > 0) {
 				sb.AppendLine(String.Join("\n", this._Joins));
@@ -643,7 +446,6 @@ namespace OracleSqlBuilder {
 		/// Initializes the properties.
 		/// </summary>
 		private void _InitProperties() {
-			this._Fields = new List<string>();
 			this._Joins = new List<string>();
 			this._Wheres = new List<string>();
 			this._Groups = new List<string>();

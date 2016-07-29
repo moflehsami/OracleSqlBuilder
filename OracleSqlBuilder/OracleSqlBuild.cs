@@ -35,6 +35,27 @@
 		}
 
 		/// <summary>
+		/// OracleSql Select Count builder.
+		/// </summary>
+		/// <param name="Database">The database.</param>
+		/// <param name="Table">The table.</param>
+		/// <param name="TableAlias">The alias of the table.</param>
+		/// <returns>The instance of OracleSqlBuilderSelectCount.</returns>
+		public static OracleSqlBuilderSelectCount SelectCount(string Database, string Table, string TableAlias) {
+			return new OracleSqlBuilderSelectCount(Database, Table, TableAlias);
+		}
+
+		/// <summary>
+		/// OracleSql Select builder.
+		/// </summary>
+		/// <param name="Database">The database.</param>
+		/// <param name="Table">The table.</param>
+		/// <returns>The instance of OracleSqlBuilderSelectCount.</returns>
+		public static OracleSqlBuilderSelectCount SelectCount(string Database, string Table) {
+			return new OracleSqlBuilderSelectCount(Database, Table);
+		}
+
+		/// <summary>
 		/// OracleSql Insert builder.
 		/// </summary>
 		/// <param name="Database">The database.</param>
