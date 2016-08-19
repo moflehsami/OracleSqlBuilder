@@ -117,6 +117,7 @@ namespace OracleSqlBuilder {
             Debug.WriteLine("==================================================");
             Debug.WriteLine("OracleSQL Query:");
             Debug.WriteLine(this);
+            Debug.WriteLine(null);
         }
         #endregion
 

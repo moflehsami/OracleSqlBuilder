@@ -61,10 +61,16 @@ namespace OracleSqlBuilder {
                                 Debug.WriteLine("An error occured while trying to execute the query.");
                                 Debug.WriteLine(String.Format("OracleSQL Error: {0} - {1}", ex.ErrorCode, ex.Message));
                                 Debug.WriteLine(ex);
+                                if (OracleSqlConfig.ThrowExceptions) {
+                                    throw;
+                                }
                             } catch (Exception ex) {
                                 Debug.WriteLine("An error occured while trying to execute the query.");
                                 Debug.WriteLine(String.Format("Error: {0}", ex.Message));
                                 Debug.WriteLine(ex);
+                                if (OracleSqlConfig.ThrowExceptions) {
+                                    throw;
+                                }
                             }
                         }
                     }
@@ -72,10 +78,16 @@ namespace OracleSqlBuilder {
                     Debug.WriteLine("Unable to connect to the specified OracleSQL host.");
                     Debug.WriteLine(String.Format("OracleSQL Error: {0} - {1}", ex.ErrorCode, ex.Message));
                     Debug.WriteLine(ex);
+                    if (OracleSqlConfig.ThrowExceptions) {
+                        throw;
+                    }
                 } catch (Exception ex) {
                     Debug.WriteLine("Unable to connect to the specified OracleSQL host.");
                     Debug.WriteLine(String.Format("Error: {0}", ex.Message));
                     Debug.WriteLine(ex);
+                    if (OracleSqlConfig.ThrowExceptions) {
+                        throw;
+                    }
                 } finally {
                     if (cn != null && cn.State == ConnectionState.Open) {
                         cn.Close();
@@ -149,10 +161,16 @@ namespace OracleSqlBuilder {
                                 Debug.WriteLine("An error occured while trying to execute the query.");
                                 Debug.WriteLine(String.Format("OracleSQL Error: {0} - {1}", ex.ErrorCode, ex.Message));
                                 Debug.WriteLine(ex);
+                                if (OracleSqlConfig.ThrowExceptions) {
+                                    throw;
+                                }
                             } catch (Exception ex) {
                                 Debug.WriteLine("An error occured while trying to execute the query.");
                                 Debug.WriteLine(String.Format("Error: {0}", ex.Message));
                                 Debug.WriteLine(ex);
+                                if (OracleSqlConfig.ThrowExceptions) {
+                                    throw;
+                                }
                             }
                         }
                     }
@@ -160,10 +178,16 @@ namespace OracleSqlBuilder {
                     Debug.WriteLine("Unable to connect to the specified OracleSQL host.");
                     Debug.WriteLine(String.Format("OracleSQL Error: {0} - {1}", ex.ErrorCode, ex.Message));
                     Debug.WriteLine(ex);
+                    if (OracleSqlConfig.ThrowExceptions) {
+                        throw;
+                    }
                 } catch (Exception ex) {
                     Debug.WriteLine("Unable to connect to the specified OracleSQL host.");
                     Debug.WriteLine(String.Format("Error: {0}", ex.Message));
                     Debug.WriteLine(ex);
+                    if (OracleSqlConfig.ThrowExceptions) {
+                        throw;
+                    }
                 } finally {
                     if (cn != null && cn.State == ConnectionState.Open) {
                         cn.Close();

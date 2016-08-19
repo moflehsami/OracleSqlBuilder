@@ -10,6 +10,11 @@
         public static bool Debug { get; set; }
 
         /// <summary>
+        /// Throw Exceptions property. If true, errors will be thrown out.
+        /// </summary>
+        public static bool ThrowExceptions { get; set; }
+
+        /// <summary>
         /// Default Connection property. The name of the default connection.
         /// </summary>
         public static string DefaultConnection { get; set; }
