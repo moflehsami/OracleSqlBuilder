@@ -195,8 +195,23 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("LEFT JOIN {0}.{1} AS {2}\n\tON ({3})", this._EncloseBackTick(Database), this._EncloseBackTick(Table), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("LEFT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
+        }
+
+        /// <summary>
+        /// Adds a LEFT JOIN clause.
+        /// </summary>
+        /// <param name="Database">The database of the table to be joined.</param>
+        /// <param name="Table">The table to be joined.</param>
+        /// <param name="IncrementTableAlias">The alias of the table using the incremented table name.</param>
+        /// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
+        /// <returns>The current instance of this class.</returns>
+        public OracleSqlBuilderSelect SetLeftJoin(string Database, string Table, uint IncrementTableAlias, string ConditionStatement) {
+            if (IncrementTableAlias == 0) {
+                return this.SetLeftJoin(Database, Table, Table, ConditionStatement);
+            }
+            return this.SetLeftJoin(Database, Table, Table + "_" + IncrementTableAlias, ConditionStatement);
         }
 
         /// <summary>
@@ -221,8 +236,22 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("LEFT JOIN {0}.{1} AS {2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(Table), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("LEFT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
+        }
+
+        /// <summary>
+        /// Adds a LEFT JOIN clause.
+        /// </summary>
+        /// <param name="Table">The table to be joined.</param>
+        /// <param name="IncrementTableAlias">The alias of the table using the incremented table name.</param>
+        /// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
+        /// <returns>The current instance of this class.</returns>
+        public OracleSqlBuilderSelect SetLeftJoin(string Table, uint IncrementTableAlias, string ConditionStatement) {
+            if (IncrementTableAlias == 0) {
+                return this.SetLeftJoin(Table, Table, ConditionStatement);
+            }
+            return this.SetLeftJoin(Table, Table + "_" + IncrementTableAlias, ConditionStatement);
         }
 
         /// <summary>
@@ -240,8 +269,21 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("LEFT JOIN {0}.{1} AS {2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(this._Table), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("LEFT JOIN {0}.{1} AS {2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(this._Table), !this._Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
+        }
+
+        /// <summary>
+        /// Adds a LEFT JOIN clause.
+        /// </summary>
+        /// <param name="IncrementTableAlias">The alias of the table using the incremented table name.</param>
+        /// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
+        /// <returns>The current instance of this class.</returns>
+        public OracleSqlBuilderSelect SetLeftJoin(uint IncrementTableAlias, string ConditionStatement) {
+            if (IncrementTableAlias == 0) {
+                return this.SetLeftJoin(this._Table, ConditionStatement);
+            }
+            return this.SetLeftJoin(this._Table + "_" + IncrementTableAlias, ConditionStatement);
         }
 
         /// <summary>
@@ -333,8 +375,23 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1} AS {2}\n\tON ({3})", this._EncloseBackTick(Database), this._EncloseBackTick(Table), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
+        }
+
+        /// <summary>
+        /// Adds a RIGHT JOIN clause.
+        /// </summary>
+        /// <param name="Database">The database of the table to be joined.</param>
+        /// <param name="Table">The table to be joined.</param>
+        /// <param name="IncrementTableAlias">The alias of the table using the incremented table name.</param>
+        /// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
+        /// <returns>The current instance of this class.</returns>
+        public OracleSqlBuilderSelect SetRightJoin(string Database, string Table, uint IncrementTableAlias, string ConditionStatement) {
+            if (IncrementTableAlias == 0) {
+                return this.SetRightJoin(Database, Table, Table, ConditionStatement);
+            }
+            return this.SetRightJoin(Database, Table, Table + "_" + IncrementTableAlias, ConditionStatement);
         }
 
         /// <summary>
@@ -359,8 +416,22 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1} AS {2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(Table), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
+        }
+
+        /// <summary>
+        /// Adds a RIGHT JOIN clause.
+        /// </summary>
+        /// <param name="Table">The table to be joined.</param>
+        /// <param name="IncrementTableAlias">The alias of the table using the incremented table name.</param>
+        /// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
+        /// <returns>The current instance of this class.</returns>
+        public OracleSqlBuilderSelect SetRightJoin(string Table, uint IncrementTableAlias, string ConditionStatement) {
+            if (IncrementTableAlias == 0) {
+                return this.SetRightJoin(Table, Table, ConditionStatement);
+            }
+            return this.SetRightJoin(Table, Table + "_" + IncrementTableAlias, ConditionStatement);
         }
 
         /// <summary>
@@ -378,8 +449,21 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1} AS {2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(this._Table), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1} AS {2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(this._Table), !this._Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
+        }
+
+        /// <summary>
+        /// Adds a RIGHT JOIN clause.
+        /// </summary>
+        /// <param name="IncrementTableAlias">The alias of the table using the incremented table name.</param>
+        /// <param name="ConditionStatement">The condition statment/s of the joined table.</param>
+        /// <returns>The current instance of this class.</returns>
+        public OracleSqlBuilderSelect SetRightJoin(uint IncrementTableAlias, string ConditionStatement) {
+            if (IncrementTableAlias == 0) {
+                return this.SetRightJoin(this._Table, ConditionStatement);
+            }
+            return this.SetRightJoin(this._Table + "_" + IncrementTableAlias, ConditionStatement);
         }
 
         /// <summary>
