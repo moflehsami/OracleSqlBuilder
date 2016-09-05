@@ -118,21 +118,44 @@ namespace OracleSqlBuilder {
         /// <summary>
         /// Adds an expression/column to the SELECT clause.
         /// </summary>
+        /// <param name="Condition">The condition to check before adding to the SELECT clause.</param>
+        /// <param name="Expression">The expression/column to be added.</param>
+        /// <param name="Alias">The alias of the expression.</param>
+        /// <returns>The current instance of this class.</returns>
+        public OracleSqlBuilderSelect SetSelect(bool Condition, string Expression, string Alias) {
+            if (Condition) {
+                if (String.IsNullOrWhiteSpace(Expression)) {
+                    throw new ArgumentException("Expression argument should not be empty.");
+                }
+                if (!this._IsValidExpression(Expression)) {
+                    throw new ArgumentException(String.Format("Expression argument '{0}' is not a valid format.", Expression));
+                }
+                if (this._VirtualFields.ContainsKey(Expression) && String.IsNullOrWhiteSpace(Alias)) {
+                    Alias = Expression;
+                }
+                this._Fields.Add(String.Format("{0}{1}", this._Name(Expression), String.IsNullOrWhiteSpace(Alias) ? null : String.Format(" AS {0}", this._EncloseBackTick(this._RemoveBackTick(Alias)))));
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Adds an expression/column to the SELECT clause.
+        /// </summary>
+        /// <param name="Condition">The condition to check before adding to the SELECT clause.</param>
+        /// <param name="Expression">The expression/column to be added.</param>
+        /// <returns>The current instance of this class.</returns>
+        public OracleSqlBuilderSelect SetSelect(bool Condition, string Expression) {
+            return this.SetSelect(Condition, Expression, null);
+        }
+
+        /// <summary>
+        /// Adds an expression/column to the SELECT clause.
+        /// </summary>
         /// <param name="Expression">The expression/column to be added.</param>
         /// <param name="Alias">The alias of the expression.</param>
         /// <returns>The current instance of this class.</returns>
         public OracleSqlBuilderSelect SetSelect(string Expression, string Alias) {
-            if (String.IsNullOrWhiteSpace(Expression)) {
-                throw new ArgumentException("Expression argument should not be empty.");
-            }
-            if (!this._IsValidExpression(Expression)) {
-                throw new ArgumentException(String.Format("Expression argument '{0}' is not a valid format.", Expression));
-            }
-            if (this._VirtualFields.ContainsKey(Expression) && String.IsNullOrWhiteSpace(Alias)) {
-                Alias = Expression;
-            }
-            this._Fields.Add(String.Format("{0}{1}", this._Name(Expression), String.IsNullOrWhiteSpace(Alias) ? null : String.Format(" AS {0}", this._EncloseBackTick(this._RemoveBackTick(Alias)))));
-            return this;
+            return this.SetSelect(true, Expression, Alias);
         }
 
         /// <summary>
@@ -141,7 +164,30 @@ namespace OracleSqlBuilder {
         /// <param name="Expression">The expression/column to be added.</param>
         /// <returns>The current instance of this class.</returns>
         public OracleSqlBuilderSelect SetSelect(string Expression) {
-            this.SetSelect(Expression, null);
+            return this.SetSelect(true, Expression, null);
+        }
+
+        /// <summary>
+        /// Adds an expression/column to the SELECT clause.
+        /// </summary>
+        /// <param name="Condition">The condition to check before adding to the SELECT clause.</param>
+        /// <param name="Select">The OracleSqlBuilderSelect instance.</param>
+        /// <param name="Alias">The alias of the expression.</param>
+        /// <returns>The current instance of this class.</returns>
+        public OracleSqlBuilderSelect SetSelect(bool Condition, OracleSqlBuilderSelect Select, string Alias) {
+            if (Condition) {
+                if (Select == null) {
+                    throw new ArgumentException("Select argument should not be null.");
+                }
+                string strQuery = Select.ToString();
+                if (String.IsNullOrWhiteSpace(strQuery)) {
+                    throw new ArgumentException("Select argument should not be empty.");
+                }
+                if (String.IsNullOrWhiteSpace(Alias)) {
+                    throw new ArgumentException("Alias argument should not be empty.");
+                }
+                this._Fields.Add(String.Format("(\n{0}\n) AS {1}", this._AddTab(strQuery), this._EncloseBackTick(this._RemoveBackTick(Alias))));
+            }
             return this;
         }
 
@@ -152,18 +198,7 @@ namespace OracleSqlBuilder {
         /// <param name="Alias">The alias of the expression.</param>
         /// <returns>The current instance of this class.</returns>
         public OracleSqlBuilderSelect SetSelect(OracleSqlBuilderSelect Select, string Alias) {
-            if (Select == null) {
-                throw new ArgumentException("Select argument should not be null.");
-            }
-            string strQuery = Select.ToString();
-            if (String.IsNullOrWhiteSpace(strQuery)) {
-                throw new ArgumentException("Select argument should not be empty.");
-            }
-            if (String.IsNullOrWhiteSpace(Alias)) {
-                throw new ArgumentException("Alias argument should not be empty.");
-            }
-            this._Fields.Add(String.Format("(\n{0}\n) AS {1}", this._AddTab(strQuery), this._EncloseBackTick(this._RemoveBackTick(Alias))));
-            return this;
+            return this.SetSelect(true, Select, Alias);
         }
 
         /// <summary>
