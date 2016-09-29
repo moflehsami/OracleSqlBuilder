@@ -46,7 +46,7 @@ namespace OracleSqlBuilder {
         /// <param name="Name">The name of the parameter.</param>
         /// <param name="Value">The value of the parameter.</param>
         /// <returns>The current instance of this class.</returns>
-        public OracleSqlBuilderUpdate SetParameter(string Name, string Value) {
+        public OracleSqlBuilderUpdate SetParameter(string Name, object Value) {
             this._SetParameter(Name, Value);
             return this;
         }

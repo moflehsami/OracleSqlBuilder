@@ -78,7 +78,7 @@ namespace OracleSqlBuilder {
         /// </summary>
         /// <param name="Name">The name of the parameter.</param>
         /// <param name="Value">The value of the parameter.</param>
-        public OracleSqlBuilderSelectCount SetParameter(string Name, string Value) {
+        public OracleSqlBuilderSelectCount SetParameter(string Name, object Value) {
             this._SetParameter(Name, Value);
             return this;
         }
