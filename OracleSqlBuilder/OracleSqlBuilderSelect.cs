@@ -48,7 +48,7 @@ namespace OracleSqlBuilder {
             } else {
                 this._TableAlias = Table;
             }
-            this._From = String.Format("{0}.{1}{2}", this._EncloseBackTick(Database), this._EncloseBackTick(Table), !String.IsNullOrWhiteSpace(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(this._RemoveBackTick(TableAlias))) : null);
+            this._From = String.Format("{0}.{1}{2}", this._EncloseBackTick(Database), this._EncloseBackTick(Table), !String.IsNullOrWhiteSpace(TableAlias) ? String.Format(" {0}", this._EncloseBackTick(this._RemoveBackTick(TableAlias))) : null);
             this._InitProperties();
         }
 
@@ -77,7 +77,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(TableAlias)) {
                 throw new ArgumentException("TableAlias argument should not be empty.");
             }
-            this._Table = String.Format("(\n{0}\n)", this._AddTab(strQuery));
+            this._From = String.Format("(\n{0}\n) {1}", this._AddTab(strQuery), this._EncloseBackTick(this._RemoveBackTick(TableAlias)));
             this._TableAlias = this._RemoveBackTick(TableAlias);
             this._InitProperties();
         }
@@ -230,7 +230,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("LEFT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("LEFT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
         }
 
@@ -271,7 +271,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("LEFT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("LEFT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
         }
 
@@ -304,7 +304,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("LEFT JOIN {0}.{1} AS {2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(this._Table), !this._Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("LEFT JOIN {0}.{1} {2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(this._Table), !this._Table.Equals(TableAlias) ? String.Format(" {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
         }
 
@@ -344,7 +344,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("LEFT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(strQuery), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("LEFT JOIN (\n{0}\n) {1}\n\tON ({2})", this._AddTab(strQuery), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
             return this;
         }
 
@@ -377,7 +377,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("LEFT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(String.Format("({0})", String.Join(") UNION (", lstQueries.ToArray()))), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("LEFT JOIN (\n{0}\n) {1}\n\tON ({2})", this._AddTab(String.Format("({0})", String.Join(") UNION (", lstQueries.ToArray()))), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
             return this;
         }
 
@@ -410,7 +410,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
         }
 
@@ -451,7 +451,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1}{2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(Table), !Table.Equals(TableAlias) ? String.Format(" {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
         }
 
@@ -484,7 +484,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1} AS {2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(this._Table), !this._Table.Equals(TableAlias) ? String.Format(" AS {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("RIGHT JOIN {0}.{1} {2}\n\tON ({3})", this._EncloseBackTick(this._Database), this._EncloseBackTick(this._Table), !this._Table.Equals(TableAlias) ? String.Format(" {0}", this._EncloseBackTick(TableAlias)) : null, this._Name(ConditionStatement)));
             return this;
         }
 
@@ -524,7 +524,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("RIGHT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(strQuery), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("RIGHT JOIN (\n{0}\n) {1}\n\tON ({2})", this._AddTab(strQuery), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
             return this;
         }
 
@@ -557,7 +557,7 @@ namespace OracleSqlBuilder {
             if (String.IsNullOrWhiteSpace(ConditionStatement)) {
                 throw new ArgumentException("Condition argument should not be empty.");
             }
-            this._Joins.Add(String.Format("RIGHT JOIN (\n{0}\n) AS {1}\n\tON ({2})", this._AddTab(String.Format("({0})", String.Join(") UNION (", lstQueries.ToArray()))), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
+            this._Joins.Add(String.Format("RIGHT JOIN (\n{0}\n) {1}\n\tON ({2})", this._AddTab(String.Format("({0})", String.Join(") UNION (", lstQueries.ToArray()))), this._EncloseBackTick(TableAlias), this._Name(ConditionStatement)));
             return this;
         }
 
