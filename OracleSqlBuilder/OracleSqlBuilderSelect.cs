@@ -81,6 +81,30 @@ namespace OracleSqlBuilder {
             this._TableAlias = this._RemoveBackTick(TableAlias);
             this._InitProperties();
         }
+
+        /// <summary>
+        /// Initializes the query as a table, and table alias for the SELECT statement.
+        /// </summary>
+        /// <param name="Selects">The list of OracleSqlBuilderSelect instances.</param>
+        /// <param name="TableAlias">The alias of the query.</param>
+        public OracleSqlBuilderSelect(List<OracleSqlBuilderSelect> Selects, string TableAlias) {
+            if (Selects == null) {
+                throw new ArgumentException("Select argument should not be null.");
+            }
+            if (Selects.Count == 0) {
+                throw new ArgumentException("Select argument should not be null.");
+            }
+            List<string> lstQueries = new List<string>();
+            foreach (var Select in Selects) {
+                lstQueries.Add(Select.ToString());
+            }
+            if (String.IsNullOrWhiteSpace(TableAlias)) {
+                throw new ArgumentException("TableAlias argument should not be empty.");
+            }
+            this._From = String.Format("(\n({0})\n) {1}", String.Join(") UNION (", lstQueries.ToArray()), this._EncloseBackTick(this._RemoveBackTick(TableAlias)));
+            this._TableAlias = this._RemoveBackTick(TableAlias);
+            this._InitProperties();
+        }
         #endregion
 
         #region Public Methods

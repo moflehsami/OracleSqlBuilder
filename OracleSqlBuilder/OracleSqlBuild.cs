@@ -1,4 +1,5 @@
-﻿namespace OracleSqlBuilder {
+﻿using System.Collections.Generic;
+namespace OracleSqlBuilder {
     /// <summary>
     /// OracleSql Build class.
     /// </summary>
@@ -32,6 +33,16 @@
         /// <returns>The instance of OracleSqlBuilderSelect.</returns>
         public static OracleSqlBuilderSelect Select(OracleSqlBuilderSelect Select, string TableAlias) {
             return new OracleSqlBuilderSelect(Select, TableAlias);
+        }
+
+        /// <summary>
+        /// OracleSql Select builder.
+        /// </summary>
+        /// <param name="Selects">The list of instance of OracleSqlBuilderSelect isntances.</param>
+        /// <param name="TableAlias">The alias of the table.</param>
+        /// <returns>The instance of OracleSqlBuilderSelect.</returns>
+        public static OracleSqlBuilderSelect Select(List<OracleSqlBuilderSelect> Selects, string TableAlias) {
+            return new OracleSqlBuilderSelect(Selects, TableAlias);
         }
 
         /// <summary>
