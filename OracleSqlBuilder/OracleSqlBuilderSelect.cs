@@ -115,7 +115,7 @@ namespace OracleSqlBuilder {
         /// <param name="Expression">The query expression.</param>
         /// <returns>The current instance of this class.</returns>
         public OracleSqlBuilderSelect SetVirtualField(string Name, string Expression) {
-            this._SetVirtualField(Name, Expression);
+            this._SetVirtualField(Name, this._Name(Expression));
             return this;
         }
 
