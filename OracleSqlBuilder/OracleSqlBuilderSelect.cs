@@ -18,7 +18,6 @@ namespace OracleSqlBuilder {
         private bool _IsWithRollUp { get; set; }
         private List<string> _Havings { get; set; }
         private List<string> _Orders { get; set; }
-        private double _LimitRowCount { get; set; }
         #endregion
 
         #region Constructor
@@ -721,16 +720,6 @@ namespace OracleSqlBuilder {
             this.SetOrderBy(OrderDirections.Asc, Expressions);
             return this;
         }
-
-        /// <summary>
-        /// Sets the LIMIT clause.
-        /// </summary>
-        /// <param name="RowCount">The row count limit.</param>
-        /// <returns>The current instance of this class.</returns>
-        public OracleSqlBuilderSelect SetLimit(double RowCount) {
-            this._LimitRowCount = RowCount;
-            return this;
-        }
         #endregion
 
         #region Public Override Method
@@ -749,9 +738,6 @@ namespace OracleSqlBuilder {
             sb.AppendLine(String.Format("FROM {0}", this._From));
             if (this._Joins.Count > 0) {
                 sb.AppendLine(String.Join("\n", this._Joins));
-            }
-            if (this._LimitRowCount > 0) {
-                this.SetWhere("ROWNUM <= {0}", this._LimitRowCount);
             }
             if (this._Wheres.Count > 0) {
                 sb.AppendLine(String.Format("WHERE\n\t({0})", String.Join(" AND ", this._Wheres)));
