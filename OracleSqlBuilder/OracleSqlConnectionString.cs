@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text.RegularExpressions;
+using Oracle.ManagedDataAccess.Client;
 
 namespace OracleSqlBuilder {
     /// <summary>
@@ -289,6 +291,39 @@ namespace OracleSqlBuilder {
         /// <returns>The connection.</returns>
         public static string Read() {
             return OracleSqlConnectionString.Read(OracleSqlConfig.DefaultConnection);
+        }
+
+        /// <summary>
+        /// Tests the connection string if it is valid.
+        /// </summary>
+        /// <param name="ConnectionString">The connection string.</param>
+        /// <returns>True if the connection string is valid. Otherwise, false.</returns>
+        public static bool TestConnection(string ConnectionString) {
+            var blnSuccess = true;
+            if (String.IsNullOrWhiteSpace(ConnectionString)) {
+                blnSuccess = false;
+            }
+            using (var cn = new OracleConnection()) {
+                cn.ConnectionString = ConnectionString;
+                try {
+                    cn.Open();
+                } catch {
+                    blnSuccess = false;
+                } finally {
+                    if (cn != null && cn.State == ConnectionState.Open) {
+                        cn.Close();
+                    }
+                }
+            }
+            return blnSuccess;
+        }
+
+        /// <summary>
+        /// Tests the connection string if it is valid.
+        /// </summary>
+        /// <returns>True if the connection string is valid. Otherwise, false.</returns>
+        public static bool TestConnection() {
+            return OracleSqlConnectionString.TestConnection(OracleSqlConnectionString.Read());
         }
         #endregion
 
